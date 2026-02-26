@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#106EBE",
+                        "mint": "#0FFCBE",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                        "moderate": "#f97316",
+                        "low": "#0FFCBE",
+                        "high": "#dc2626",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <title>Anxiety Analysis Report - AnxietySense</title>
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-base text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+    <!-- Top Navigation Bar -->
+    <header
+        class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-primary text-white p-1.5 rounded-lg flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">psychology</span>
+                </div>
+                <div class="text-xl font-bold tracking-tight text-primary">AnxietySense</div>
+            </div>
+            <nav class="hidden md:flex items-center gap-8">
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="/dashboard">Dashboard</a>
+                <a class="text-sm font-medium text-primary border-b-2 border-primary pb-1" href="/patients">Patients</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="/profile">Settings</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3 pl-4 border-l border-primary/20">
+                    <div class="text-right hidden sm:block">
+                        <p id="nav-doctor-name" class="text-xs font-bold">Dr. Sarah Chen</p>
+                        <p id="nav-doctor-role" class="text-[10px] text-slate-500">Clinical Psychologist</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden border border-primary/30"
+                        data-alt="Professional headshot of a female doctor">
+                        <img id="nav-profile-img" class="w-full h-full object-cover" src="" alt=""
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="material-symbols-outlined text-primary" style="display:none;">person</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow max-w-7xl mx-auto w-full px-6 py-8">
+        <!-- Patient Header -->
+        <div
+            class="bg-white dark:bg-slate-900 rounded-2xl p-6 mb-8 border border-primary/10 shadow-sm flex flex-col md:flex-row items-center md:items-center justify-between gap-6">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <!-- Captured Patient Photo -->
+                <div class="relative group">
+                    <div
+                        class="w-20 h-20 rounded-full border-4 border-white dark:border-slate-800 shadow-lg overflow-hidden bg-slate-200 dark:bg-slate-700">
+                        <img id="capturedFaceImg" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDErHW8B61fYVa6zHuV6vtNTKU6rI53mS5ljFE0-ZVppf4_Ud6FmLmOYweIuQHwYGBoweJRoe9A3Z98ETSBe87YRLAn5XYOsMjHR7gjVzet39egwrjqI82qoLN6WPypbE1Kv8zUxt9d_882E05GoR7QjlipXpwnFiMI5P6rIG8OYkQPiarNhGiZqNV7S2cBQajF29eUbgpnA6rv_-8FrjJFiwpDWGckt_GZ58oVIuUWCGFffUWF4xR1_DQIJTpSoBxBVaMSohN74MdE"
+                            alt="Captured Face">
+                        <div class="absolute inset-0 border-2 border-primary/10 rounded-full"></div>
+                    </div>
+                    <div
+                        class="absolute -bottom-1 -right-1 bg-primary text-white p-1 rounded-full shadow-lg border-2 border-white dark:border-slate-900">
+                        <span class="material-symbols-outlined text-xs">verified</span>
+                    </div>
+                </div>
+                <div class="text-center md:text-left">
+                    <h1
+                        class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+                        Anxiety Analysis Report</h1>
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-1">
+                        <p class="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest"><span
+                                id="reportPatientName">Patient Name</span></p>
+                        <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Age: <span
+                                id="reportPatientAge" class="font-bold">--</span></p>
+                        <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">ID: <span id="reportPatientId"
+                                class="font-bold">#--</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button id="downloadPdfBtn"
+                    class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-200 transition-all">
+                    <span class="material-symbols-outlined text-lg">download</span>
+                    PDF
+                </button>
+                <button
+                    class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-200 transition-all">
+                    <span class="material-symbols-outlined text-lg">share</span>
+                    Share
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- OVERVIEW ROW: Score and Emotions -->
+            <div class="lg:col-span-4">
+                <!-- AI Generated Score Card -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-primary/5 flex flex-col items-center text-center relative overflow-hidden h-full">
+                    <div
+                        class="absolute top-0 right-0 p-3 bg-primary/5 text-primary rounded-bl-xl font-bold text-[10px] uppercase tracking-widest">
+                        Live Result</div>
+                    <p
+                        class="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-8">
+                        Anxiety Score Index</p>
+                    <div class="relative flex items-center justify-center mb-8">
+                        <svg class="w-44 h-44 transform -rotate-90">
+                            <circle class="text-slate-50 dark:text-slate-700" cx="88" cy="88" fill="transparent" r="80"
+                                stroke="currentColor" stroke-width="12"></circle>
+                            <circle id="anxietyCircle" class="text-primary" cx="88" cy="88" fill="transparent" r="80"
+                                stroke="currentColor" stroke-dasharray="502" stroke-dashoffset="251"
+                                stroke-linecap="round" stroke-width="12"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="anxietyScore" class="text-5xl font-black text-slate-900 dark:text-white">49</span>
+                            <span
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Percentile</span>
+                        </div>
+                    </div>
+                    <div id="anxietyLevel"
+                        class="bg-primary/10 text-primary px-6 py-2 rounded-full font-black text-base uppercase tracking-wider mb-4">
+                        Moderate Anxiety</div>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed max-w-[240px]">AI detected
+                        consistent behavioral patterns within the moderate anxiety baseline.</p>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8">
+                <!-- Emotion Analysis Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-primary/5 h-full">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3
+                            class="text-sm font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg">bar_chart</span>
+                            Facial Emotion Breakdown
+                        </h3>
+                        <div class="text-[10px] font-bold text-primary/60 bg-primary/5 px-2 py-1 rounded">PROCESSED
+                        </div>
+                    </div>
+                    <div id="emotionBarsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                        <!-- Fear -->
+                        <div>
+                            <div class="flex justify-between mb-3">
+                                <span
+                                    class="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300">Fear
+                                    Response</span>
+                                <span id="val_fear" class="text-xs font-black text-primary">--%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div id="bar_fear" class="h-full bg-primary rounded-full transition-all duration-1000"
+                                    style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <!-- Sad -->
+                        <div>
+                            <div class="flex justify-between mb-3">
+                                <span
+                                    class="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300">Negative
+                                    Bias (Sad)</span>
+                                <span id="val_sad" class="text-xs font-black text-primary/60">--%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div id="bar_sad" class="h-full bg-primary/60 rounded-full transition-all duration-1000"
+                                    style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <!-- Angry -->
+                        <div>
+                            <div class="flex justify-between mb-3">
+                                <span
+                                    class="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300">Irritability
+                                    (Angry)</span>
+                                <span id="val_angry" class="text-xs font-black text-slate-400">--%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div id="bar_angry"
+                                    class="h-full bg-slate-400 rounded-full transition-all duration-1000"
+                                    style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <!-- Happy -->
+                        <div>
+                            <div class="flex justify-between mb-3">
+                                <span
+                                    class="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300">Positive
+                                    Valence</span>
+                                <span id="val_happy" class="text-xs font-black text-mint">--%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div id="bar_happy" class="h-full bg-mint rounded-full transition-all duration-1000"
+                                    style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-700 flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary text-lg">verified</span>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic">
+                            Neural analysis validates high correlation between micro-expression shifts and acute state
+                            anxiety. Clinical oversight is recommended for definitive diagnosis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAIL ROW: Clinical Notes and Level Guide -->
+            <div class="lg:col-span-8">
+                <!-- Clinical Interpretation Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-primary/5 h-full">
+                    <h3
+                        class="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-8 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">clinical_notes</span>
+                        Clinical Consultation Notes
+                    </h3>
+                    <div class="space-y-8">
+                        <div>
+                            <h4
+                                class="text-slate-900 dark:text-white font-black text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <div class="w-1 h-5 bg-primary rounded-full"></div>
+                                AI Predictive Insight
+                            </h4>
+                            <p id="aiInsightText" class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                Analysis pending clinical verification...</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-5 bg-primary/5 border-l-4 border-primary rounded-r-2xl">
+                                <h5 class="text-primary font-black text-[10px] uppercase tracking-widest mb-1">Key
+                                    Biological Marker</h5>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 font-medium">Rapid onset
+                                    fear-spiking identified during neutral exposure benchmarking.</p>
+                            </div>
+                            <div class="p-5 bg-secondary/5 border-l-4 border-slate-300 rounded-r-2xl">
+                                <h5 class="text-slate-500 font-black text-[10px] uppercase tracking-widest mb-1">
+                                    Observation Focus</h5>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 font-medium">Concentrated muscular
+                                    tension around orbital regions (correlates with high stress).</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4
+                                class="text-slate-900 dark:text-white font-black text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">verified_user</span>
+                                Formal Recommendations
+                            </h4>
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                                <li class="flex items-start gap-3 text-xs text-slate-600 dark:text-slate-400">
+                                    <span
+                                        class="material-symbols-outlined text-primary text-base">radio_button_checked</span>
+                                    Initiate guided cognitive restructuring for acute triggers.
+                                </li>
+                                <li class="flex items-start gap-3 text-xs text-slate-600 dark:text-slate-400">
+                                    <span
+                                        class="material-symbols-outlined text-primary text-base">radio_button_checked</span>
+                                    Schedule biometric follow-up in 7-10 clinical days.
+                                </li>
+                                <li class="flex items-start gap-3 text-xs text-slate-600 dark:text-slate-400">
+                                    <span
+                                        class="material-symbols-outlined text-primary text-base">radio_button_checked</span>
+                                    Monitor HRV delta during resting state sessions.
+                                </li>
+                                <li class="flex items-start gap-3 text-xs text-slate-600 dark:text-slate-400">
+                                    <span
+                                        class="material-symbols-outlined text-primary text-base">radio_button_checked</span>
+                                    Assess pre-operative baseline before pharmacological intervention.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4">
+                <!-- Anxiety Scale Level Guide -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-primary/5">
+                    <h3
+                        class="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-8 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">info</span>
+                        Scoring Reference
+                    </h3>
+                    <div class="space-y-4">
+                        <div
+                            class="group p-4 rounded-xl bg-mint/5 border border-mint/10 transition-all hover:bg-mint/10">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">0-39
+                                    Value</span>
+                                <span
+                                    class="text-[9px] font-black text-mint px-1.5 py-0.5 bg-mint/20 rounded">IDEAL</span>
+                            </div>
+                            <span
+                                class="font-black text-sm text-slate-700 dark:text-slate-200 uppercase tracking-wider">Low
+                                Range</span>
+                        </div>
+                        <div
+                            class="group p-4 rounded-xl bg-orange-500/5 border border-orange-500/10 transition-all hover:bg-orange-500/10 active-range">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">40-69
+                                    Value</span>
+                                <span
+                                    class="text-[9px] font-black text-orange-500 px-1.5 py-0.5 bg-orange-500/20 rounded">TYPICAL</span>
+                            </div>
+                            <span
+                                class="font-black text-sm text-slate-700 dark:text-slate-200 uppercase tracking-wider">Moderate
+                                Range</span>
+                        </div>
+                        <div
+                            class="group p-4 rounded-xl bg-red-500/5 border border-red-500/10 transition-all hover:bg-red-500/10">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">70-100
+                                    Value</span>
+                                <span
+                                    class="text-[9px] font-black text-red-500 px-1.5 py-0.5 bg-red-500/20 rounded">CONCERN</span>
+                            </div>
+                            <span
+                                class="font-black text-sm text-slate-700 dark:text-slate-200 uppercase tracking-wider">High
+                                Range</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Sticky Bottom Action Bar -->
+    <footer
+        class="sticky bottom-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-6 py-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-moderate animate-pulse"></div>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Assessment
+                    Completed Today at 10:45 AM</span>
+            </div>
+            <div class="flex gap-4">
+                <a id="newScanBtn" href="/dashboard"
+                    class="flex items-center gap-2 px-8 py-3 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg text-sm font-black hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700">
+                    <span class="material-symbols-outlined text-lg">add_circle</span>
+                    New Scan
+                </a>
+                <button id="viewRecBtn" type="button"
+                    class="flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-lg text-sm font-black shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all">
+                    View Recommendations
+                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+    <!-- Background Decoration Gradient -->
+    <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-moderate/5 rounded-full blur-[120px]"></div>
+    </div>
+    <!-- html2canvas + jsPDF for client-side PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+        integrity="sha512-BNa5k3ZB2vX0kqV7QKQb2D8sQ0D9nq3cH0nCq1IGb1YcT6Q5q2WqZ+QK4F3Z9u5gqk7Bf7oKf4oF1wz1YJfKxA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        integrity="sha512-+x3S3e2YH0Jf6mF8mQk7Zxwq2Y6d1z2u7yJz5V9n1wzQk1aL9h2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+            (function () {
+                const doctorId = sessionStorage.getItem('doctor_id');
+                const dbPatientId = sessionStorage.getItem('db_patient_id');
+                const score = document.getElementById('anxietyScore')?.textContent.trim();
+                const level = document.getElementById('anxietyLevel')?.textContent.trim();
+
+                // --- DYNAMIC PATIENT DETAILS ---
+                const params = new URLSearchParams(window.location.search);
+                const name = params.get('name') || sessionStorage.getItem('patientName') || 'Patient Name';
+                const id = params.get('id') || sessionStorage.getItem('patientId') || '--';
+                const age = params.get('age') || sessionStorage.getItem('patientAge') || '--';
+
+                const nameEl = document.getElementById('reportPatientName');
+                const ageEl = document.getElementById('reportPatientAge');
+                const idEl = document.getElementById('reportPatientId');
+
+                if (nameEl) nameEl.textContent = name;
+                if (ageEl) ageEl.textContent = age;
+                if (idEl) idEl.textContent = (id.startsWith('#') ? id : '#' + id);
+
+                // --- LOAD ANALYSIS RESULT ---
+                const rawResult = sessionStorage.getItem('last_analysis_result');
+                let finalScore = 49;
+                let finalLevel = 'Moderate';
+                let finalDominant = 'Fear';
+
+                if (rawResult) {
+                    try {
+                        const result = JSON.parse(rawResult);
+                        if (result.captured_image) {
+                            const faceImg = document.getElementById('capturedFaceImg');
+                            if (faceImg) faceImg.src = result.captured_image;
+                        }
+
+                        finalScore = result.anxiety_score;
+                        finalLevel = result.anxiety_level;
+                        finalDominant = result.dominant_emotion;
+                        const emotions = result.emotion_probabilities;
+
+                        // Update Score & Level Text
+                        const scoreEl = document.getElementById('anxietyScore');
+                        const levelEl = document.getElementById('anxietyLevel');
+                        const circleEl = document.getElementById('anxietyCircle');
+
+                        if (scoreEl) scoreEl.textContent = Math.round(finalScore);
+                        if (levelEl) {
+                            levelEl.textContent = finalLevel + ' Anxiety';
+                            const levelLower = finalLevel.toLowerCase();
+                            levelEl.className = `bg-${levelLower}/10 text-${levelLower} px-6 py-2 rounded-full font-black text-lg mb-4`;
+                        }
+
+                        // Progress Circle
+                        if (circleEl) {
+                            const circumference = 502;
+                            const offset = circumference - (circumference * (finalScore / 100));
+                            circleEl.style.strokeDashoffset = offset;
+
+                            const levelLower = finalLevel.toLowerCase();
+                            circleEl.classList.remove('text-low', 'text-moderate', 'text-high');
+                            circleEl.classList.add(`text-${levelLower}`);
+                        }
+
+                        // Update Insight Text
+                        const insightEl = document.getElementById('aiInsightText');
+                        if (insightEl) {
+                            insightEl.textContent = `The AI detected specific patterns consistent with ${finalLevel.toLowerCase()} anxiety levels. The dominant emotion identified was "${finalDominant}", which accounts for a significant portion of the facial landmark indicators recorded during the session.`;
+                        }
+
+                        // Update Emotion Bars
+                        const emotionMap = {
+                            'fear': { val: 'val_fear', bar: 'bar_fear' },
+                            'sad': { val: 'val_sad', bar: 'bar_sad' },
+                            'angry': { val: 'val_angry', bar: 'bar_angry' },
+                            'happy': { val: 'val_happy', bar: 'bar_happy' }
+                        };
+
+                        for (const [key, ids] of Object.entries(emotionMap)) {
+                            const valEl = document.getElementById(ids.val);
+                            const barEl = document.getElementById(ids.bar);
+                            const score = emotions[key] || 0;
+                            if (valEl) valEl.textContent = score.toFixed(1) + '%';
+                            if (barEl) barEl.style.width = score.toFixed(1) + '%';
+                        }
+
+                    } catch (e) {
+                        console.error('Failed to parse analysis result:', e);
+                    }
+                }
+
+                // Track if saved in this session to prevent double-save on refresh
+                const sessionSaveKey = `saved_assessment_${dbPatientId}_${finalScore}`;
+
+                // --- AUTO-SAVE ON LOAD ---
+                if (doctorId && dbPatientId && finalScore && finalLevel && !sessionStorage.getItem(sessionSaveKey)) {
+                    console.log('Automating assessment save...');
+                    const assessmentPayload = {
+                        patient_id: dbPatientId,
+                        doctor_id: doctorId,
+                        anxiety_score: finalScore,
+                        anxiety_level: finalLevel,
+                        dominant_emotion: finalDominant
+                    };
+
+                    fetch('http://127.0.0.1:5000/api/assessments', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(assessmentPayload)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log('Assessment auto-saved:', data);
+                            sessionStorage.setItem(sessionSaveKey, 'true');
+                        })
+                        .catch(err => console.error('Auto-save error:', err));
+                }
+
+                // preserve patient params for new scan button
+                const newScanBtn = document.getElementById('newScanBtn');
+                if (newScanBtn) {
+                    const params = new URLSearchParams(window.location.search);
+                    if (params.toString()) newScanBtn.href = newScanBtn.getAttribute('href') + '?' + params.toString();
+                }
+
+                const { jsPDF } = window.jspdf || {};
+                const downloadBtn = document.getElementById('downloadPdfBtn');
+                if (!downloadBtn) return;
+
+                downloadBtn.addEventListener('click', async function () {
+                    downloadBtn.disabled = true;
+                    const originalText = downloadBtn.innerHTML;
+                    downloadBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">autorenew</span> Preparing...';
+
+                    // capture main content area
+                    const container = document.querySelector('main');
+                    try {
+                        const canvas = await html2canvas(container, { scale: 2, useCORS: true });
+                        const imgData = canvas.toDataURL('image/png');
+                        const pdf = new jsPDF({ unit: 'pt', format: 'a4' });
+                        const pageWidth = pdf.internal.pageSize.getWidth();
+                        const pageHeight = pdf.internal.pageSize.getHeight();
+
+                        // calculate image dimensions to fit A4 while preserving aspect
+                        const imgProps = { width: canvas.width, height: canvas.height };
+                        const ratio = Math.min(pageWidth / imgProps.width, pageHeight / imgProps.height);
+                        const imgWidth = imgProps.width * ratio;
+                        const imgHeight = imgProps.height * ratio;
+                        const marginX = (pageWidth - imgWidth) / 2;
+
+                        pdf.addImage(imgData, 'PNG', marginX, 20, imgWidth, imgHeight);
+
+                        // build filename using patient params if available
+                        const params = new URLSearchParams(window.location.search);
+                        const name = params.get('name') || 'patient';
+                        const id = params.get('id') || '';
+                        const ts = new Date().toISOString().replace(/[:.]/g, '-');
+                        const filename = (id ? id + '_' : '') + (name ? name.replace(/\s+/g, '_') + '_' : '') + ts + '.pdf';
+
+                        pdf.save(filename);
+                    } catch (err) {
+                        console.error('PDF generation failed', err);
+                        alert('Failed to generate PDF. See Console for details.');
+                    } finally {
+                        downloadBtn.disabled = false;
+                        downloadBtn.innerHTML = originalText;
+                    }
+                });
+
+                // Redirect to reports page and pass patient details
+                const viewRecBtn = document.getElementById('viewRecBtn');
+                if (viewRecBtn) {
+                    viewRecBtn.addEventListener('click', function () {
+                        const params = new URLSearchParams(window.location.search);
+
+                        // gather patient basics
+                        let name = params.get('name') || '';
+                        let id = params.get('id') || '';
+                        let age = params.get('age') || '';
+
+                        const targetParams = new URLSearchParams();
+                        if (name) targetParams.set('name', name);
+                        if (id) targetParams.set('id', id);
+                        if (age) targetParams.set('age', age);
+                        const target = '/patients' + (targetParams.toString() ? '?' + targetParams.toString() : '');
+
+                        window.location.href = target;
+                    });
+                }
+            })();
+    </script>
+</body>
+
+</html>

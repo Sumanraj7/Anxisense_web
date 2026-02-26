@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AnxietySense Clinical - My Patients</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#106EBE",
+                        "mint": "#0FFCBE",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+        }
+
+        .bg-medical-pattern {
+            background-image: linear-gradient(to bottom, rgba(248, 250, 252, 0.95), rgba(220, 230, 240, 0.95)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuDkJ-7NBq64PMH3-9Q-XG5OzLYe36ruB2UzbTi4l_kn_hK3VvALrohSOvr4219XCNsny6T1zpWFchzIW4YRScT66_RheWYgEmKGGJ3xCzFqt0Hlu35dEzNuNdn6A-b4KihFfuiOoNNCgCEkfDGC6I0MQuMLgxqEZfbS5PmPbS4tcl0UbVGSgaCnRRv0QwD6vkTRm_6XXOkt_AspdPR7IVVOiuNoQlYmzFsfkLIuZZo2l0FfYR65aMYTAMZdmn1ln-0b30-i1ciYaosL);
+            background-size: cover;
+            background-attachment: fixed
+        }
+    </style>
+</head>
+
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-base text-slate-900 dark:text-slate-100 min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 flex flex-col bg-white dark:bg-slate-900 border-r border-primary/10 shadow-sm z-20">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-2xl">monitoring</span>
+                </div>
+                <div>
+                    <h1 class="text-primary font-bold text-lg leading-tight text-xl">AnxietySense</h1>
+                    <p class="text-primary/60 text-xs font-semibold uppercase tracking-wider">Clinical Edition</p>
+                </div>
+            </div>
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/dashboard">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">dashboard</span>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/quick-scan">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">biotech</span>
+                    <span class="font-medium">Scan</span>
+                </a>
+
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/patients">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">folder_open</span>
+                    <span class="font-medium">Records</span>
+                </a>
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/profile">
+                    <span
+                        class="material-symbols-outlined text-slate-400 group-hover:text-primary">account_circle</span>
+                    <span class="font-medium">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-primary/10">
+                <div class="flex items-center gap-3 p-2 rounded-lg bg-primary/5">
+                    <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden relative">
+                        <img id="nav-profile-img" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtqORVm3pVS9D_BYs_JoOLuFTS2bTiioo5AF8APG7zptSpRNE-LnNaDSMFam1BO8nIvwaNEMEN28u8DP28QENyDBzU1Y600FG-z4q4MNvIANBdbPM8MmW5y4TCnW3Zyktepq-ToBPQ-p6jScR7zn780C_TKZ0OJdqgrypW3s2Sn6gFnE33JThhYB9If5NCM_nGwG4Kh-_pF3uSbv-FNRqL-A49sTkXexMFBNTmgaFoevninShXLKw_GaIjefNMjbnXufn3_z66lDYl" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p id="nav-doctor-name" class="text-sm font-semibold truncate">Dr. Suman</p>
+                        <p id="nav-doctor-role" class="text-xs text-slate-500 truncate">Clinician</p>
+                    </div>
+                    <button
+                        onclick="try{sessionStorage.removeItem('authenticated'); sessionStorage.removeItem('loginEmail');}catch(e){}; window.location.href='/';"
+                        class="material-symbols-outlined text-slate-400 text-lg" title="Logout">logout</button>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col bg-medical-pattern relative overflow-y-auto">
+            <!-- Top Header -->
+            <header
+                class="sticky top-0 z-10 flex items-center justify-between px-8 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+                <div class="flex-1 max-w-2xl">
+                    <div class="relative group">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+                        <input id="patientSearchInput"
+                            class="w-full pl-11 pr-4 py-2.5 bg-slate-100/50 dark:bg-slate-800/50 border-none rounded-xl focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 text-sm"
+                            placeholder="Search patients by name or ID..." type="text" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 ml-6">
+                    <div class="relative">
+                        <input id="dateFilterInput" type="date"
+                            class="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                        <button id="calendarBtn"
+                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 hover:bg-primary/10 hover:text-primary transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined">calendar_month</span>
+                            <span id="dateFilterLabel" class="text-xs font-bold hidden"></span>
+                        </button>
+                    </div>
+                    <button id="clearDateBtn"
+                        class="hidden p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500/20 transition-all"
+                        title="Clear Date Filter">
+                        <span class="material-symbols-outlined text-sm">close</span>
+                    </button>
+                </div>
+            </header>
+            <!-- Page Content -->
+            <div class="p-8 max-w-6xl mx-auto w-full">
+                <div class="flex items-end justify-between mb-8">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">My
+                            Patients</h1>
+                        <p class="text-slate-500 mt-1">Showing all patients under your clinical care</p>
+                    </div>
+                    <div id="totalPatientsCount"
+                        class="bg-primary/10 text-primary px-4 py-2 rounded-lg font-semibold text-sm">
+                        Total Patients: 0
+                    </div>
+                </div>
+                <!-- Patient List Header -->
+                <div class="grid grid-cols-12 px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400">
+                    <div class="col-span-5">Patient Details</div>
+                    <div class="col-span-3">Clinical ID</div>
+                    <div class="col-span-2">Anxiety Status</div>
+                    <div class="col-span-2 text-right">Last Sync</div>
+                </div>
+                <!-- Patient List Cards -->
+                <div id="patientListContainer" class="space-y-3">
+                    <!-- Loading State -->
+                    <div class="flex flex-col items-center justify-center py-12 text-slate-400">
+                        <span class="material-symbols-outlined animate-spin text-4xl mb-2">sync</span>
+                        <p>Fetching clinical records...</p>
+                    </div>
+                </div>
+                <!-- Load More / Pagination -->
+                <div class="mt-8 flex justify-center">
+                    <button
+                        class="px-6 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 transition-colors">
+                        Load More Patients
+                    </button>
+                </div>
+            </div>
+            <!-- Floating Action Button -->
+            <button onclick="window.location.href='/patient-info'"
+                class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-white rounded-full shadow-xl shadow-primary/40 flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-20">
+                <span class="material-symbols-outlined text-3xl">add</span>
+            </button>
+        </main>
+    </div>
+    <script src="nav.js"></script>
+    <script>
+            (function () {
+                const listContainer = document.getElementById('patientListContainer');
+                const totalCountEl = document.getElementById('totalPatientsCount');
+                const searchInput = document.getElementById('patientSearchInput');
+                const doctorId = sessionStorage.getItem('doctor_id');
+
+                // 🔸 We will REPLACE your "Load More" area with a pagination bar
+                const paginationHost =
+                    document.querySelector('.mt-8.flex.justify-center') ||
+                    document.querySelector('#paginationContainer');
+
+                let allPatients = [];
+                let filteredPatients = [];
+
+                let currentPage = 1;
+                const perPage = 10;
+
+                if (!doctorId) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                // ---------- Helpers ----------
+                const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+                }[c]));
+
+                function totalPages() {
+                    return Math.max(1, Math.ceil(filteredPatients.length / perPage));
+                }
+
+                function getPageSlice(page) {
+                    const start = (page - 1) * perPage;
+                    const end = start + perPage;
+                    return filteredPatients.slice(start, end);
+                }
+
+                function setPage(page) {
+                    const tp = totalPages();
+                    currentPage = Math.min(Math.max(1, page), tp);
+                    renderPage();
+                    renderPagination();
+                }
+
+                // ---------- Fetch ----------
+                async function fetchPatients() {
+                    try {
+                        const response = await fetch(`http://127.0.0.1:5000/api/patients?doctorid=${doctorId}`);
+                        const data = await response.json();
+
+                        if (data.success) {
+                            allPatients = data.data || [];
+                            filteredPatients = [...allPatients];
+                            setPage(1);
+                        } else {
+                            listContainer.innerHTML =
+                                `<div class="p-8 text-center text-slate-500 border border-dashed rounded-xl">${escapeHtml(data.message || 'No patients found.')}</div>`;
+                            renderPagination(true);
+                        }
+                    } catch (err) {
+                        console.error('Fetch error:', err);
+                        listContainer.innerHTML =
+                            `<div class="p-8 text-center text-red-500 border border-dashed border-red-200 rounded-xl bg-red-50">Error connecting to server. Please ensure backend is running.</div>`;
+                        renderPagination(true);
+                    }
+                }
+
+                // ---------- Search & Filter ----------
+                function filterPatients() {
+                    const query = (searchInput?.value || '').toLowerCase().trim();
+                    const dateQuery = dateFilterInput?.value || '';
+
+                    filteredPatients = allPatients.filter(p => {
+                        // Text match
+                        const name = (p.fullname || '').toLowerCase();
+                        const pid = (p.patientid !== null && p.patientid !== undefined) ? String(p.patientid).toLowerCase() : '';
+                        const textMatch = !query || name.includes(query) || pid.includes(query);
+
+                        // Date match
+                        let dateMatch = true;
+                        if (dateQuery) {
+                            const lastDate = (p.last_assessment_date || '').split(' ')[0]; // YYYY-MM-DD
+                            dateMatch = (lastDate === dateQuery);
+                        }
+
+                        return textMatch && dateMatch;
+                    });
+
+                    setPage(1);
+                }
+
+                if (searchInput) {
+                    let t;
+                    searchInput.addEventListener('input', () => {
+                        clearTimeout(t);
+                        t = setTimeout(filterPatients, 200);
+                    });
+                }
+
+                // Date Filter Events
+                const dateFilterInput = document.getElementById('dateFilterInput');
+                const calendarBtn = document.getElementById('calendarBtn');
+                const clearDateBtn = document.getElementById('clearDateBtn');
+                const dateLabel = document.getElementById('dateFilterLabel');
+
+                if (dateFilterInput) {
+                    dateFilterInput.addEventListener('change', () => {
+                        if (dateFilterInput.value) {
+                            dateLabel.textContent = dateFilterInput.value;
+                            dateLabel.classList.remove('hidden');
+                            clearDateBtn.classList.remove('hidden');
+                            calendarBtn.classList.add('bg-primary/10', 'text-primary');
+                        } else {
+                            clearDateFilters();
+                        }
+                        filterPatients();
+                    });
+                }
+
+                if (clearDateBtn) {
+                    clearDateBtn.addEventListener('click', clearDateFilters);
+                }
+
+                function clearDateFilters() {
+                    if (dateFilterInput) dateFilterInput.value = '';
+                    dateLabel.classList.add('hidden');
+                    clearDateBtn.classList.add('hidden');
+                    calendarBtn.classList.remove('bg-primary/10', 'text-primary');
+                    filterPatients();
+                }
+
+                // ---------- Render Patients ----------
+                function renderPage() {
+                    const total = filteredPatients.length;
+                    if (totalCountEl) totalCountEl.textContent = `Total Patients: ${total}`;
+
+                    if (total === 0) {
+                        listContainer.innerHTML =
+                            `<div class="p-8 text-center text-slate-500 border border-dashed rounded-xl">No patient records found or no matches.</div>`;
+                        return;
+                    }
+
+                    const pagePatients = getPageSlice(currentPage);
+
+                    listContainer.innerHTML = pagePatients.map(p => {
+                        const fullname = p.fullname || 'Unknown';
+                        const initials = fullname.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                        const lastAssess = p.last_assessment_date || 'Never';
+                        const internalId = p.id; // Correct database ID for lookups
+
+                        let statusClass = 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400';
+                        let dotClass = 'bg-emerald-500';
+
+                        if (p.latest_anxiety_level === 'Moderate') {
+                            statusClass = 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400';
+                            dotClass = 'bg-amber-500';
+                        } else if (p.latest_anxiety_level === 'High') {
+                            statusClass = 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400';
+                            dotClass = 'bg-rose-500';
+                        }
+
+                        const scoreText =
+                            (p.latest_anxiety_score !== null && p.latest_anxiety_score !== undefined)
+                                ? `${p.latest_anxiety_score}% ${p.latest_anxiety_level || ''}`.trim()
+                                : 'No Scan';
+
+                        const dominantEmotion = p.latest_dominant_emotion || 'N/A';
+
+                        return `
+        <div class="patient-row-container" data-patient-db-id="${internalId}">
+            <div class="grid grid-cols-12 items-center px-6 py-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20 transition-all cursor-pointer group patient-row-main">
+              <div class="col-span-5 flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                  ${escapeHtml(initials)}
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                    ${escapeHtml(fullname)}
+                  </h3>
+                  <p class="text-xs text-slate-500">${escapeHtml(p.gender || 'Unknown')} • ${escapeHtml(p.age || '?')} years</p>
+                </div>
+              </div>
+              <div class="col-span-3 text-sm font-medium text-slate-600 dark:text-slate-400">${escapeHtml(p.patientid || 'N/A')}</div>
+              <div class="col-span-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${statusClass} text-xs font-bold">
+                  <span class="w-1.5 h-1.5 rounded-full ${dotClass}"></span>
+                  ${escapeHtml(scoreText)}
+                </span>
+              </div>
+              <div class="col-span-2 text-right flex items-center justify-end gap-3">
+                <span class="text-xs text-slate-400">${escapeHtml(lastAssess)}</span>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-transform duration-300 expand-icon">expand_more</span>
+              </div>
+            </div>
+            
+            <!-- Expandable Detail Section -->
+            <div class="patient-detail-expansion hidden overflow-hidden transition-all duration-300">
+                <div class="p-6 bg-slate-50/50 dark:bg-slate-800/50 border-x border-b border-slate-200 dark:border-slate-800 rounded-b-xl -mt-2 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Recent Analysis Card -->
+                        <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-primary/5 shadow-sm">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Latest Scan Insights</h4>
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <p class="text-2xl font-black text-slate-900 dark:text-white">${dominantEmotion}</p>
+                                    <p class="text-xs text-slate-500">Dominant Emotion Detected</p>
+                                </div>
+                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined">psychology</span>
+                                </div>
+                            </div>
+                            <p class="text-xs italic text-slate-600 dark:text-slate-400 leading-relaxed border-l-2 border-primary/20 pl-3">
+                                "The patient exhibits indicators consistent with ${dominantEmotion.toLowerCase()} patterns. Clinical observation of facial landmarks suggest a ${p.latest_anxiety_level?.toLowerCase() || 'typical'} anxiety state."
+                            </p>
+                        </div>
+                        
+                        <!-- History Brief -->
+                        <div class="space-y-4">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Clinical History</h4>
+                            <div class="history-table-container min-h-[100px] flex items-center justify-center">
+                                <span class="material-symbols-outlined animate-spin text-slate-300">sync</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <button onclick="window.location.href='/analysis-report?id=${p.patientid}&name=${encodeURIComponent(fullname)}&age=${p.age}'" 
+                                class="text-xs font-bold text-primary hover:underline flex items-center gap-1">
+                            View Full Report <span class="material-symbols-outlined text-sm">open_in_new</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      `;
+                    }).join('');
+
+                    // Bind expansion events
+                    document.querySelectorAll('.patient-row-container').forEach(container => {
+                        const mainRow = container.querySelector('.patient-row-main');
+                        const detail = container.querySelector('.patient-detail-expansion');
+                        const icon = container.querySelector('.expand-icon');
+                        const dbId = container.getAttribute('data-patient-db-id');
+
+                        mainRow.onclick = async () => {
+                            const isHidden = detail.classList.contains('hidden');
+
+                            // Close all others
+                            document.querySelectorAll('.patient-detail-expansion').forEach(el => el.classList.add('hidden'));
+                            document.querySelectorAll('.expand-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+
+                            if (isHidden) {
+                                detail.classList.remove('hidden');
+                                icon.style.transform = 'rotate(180deg)';
+                                await fetchPatientHistory(dbId, container.querySelector('.history-table-container'));
+                            }
+                        };
+                    });
+                }
+
+                async function fetchPatientHistory(dbId, container) {
+                    if (container.getAttribute('data-loaded') === 'true') return;
+
+                    try {
+                        const res = await fetch(`http://127.0.0.1:5000/api/assessments?patientid=${dbId}`);
+                        const data = await res.json();
+
+                        if (data.success && data.data.length > 0) {
+                            container.innerHTML = `
+                                <table class="w-full text-left text-xs">
+                                    <thead class="text-slate-400">
+                                        <tr class="border-b border-slate-100 dark:border-slate-800">
+                                            <th class="pb-2 font-bold">Date</th>
+                                            <th class="pb-2 font-bold">Level</th>
+                                            <th class="pb-2 font-bold text-right">Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-600 dark:text-slate-400">
+                                        ${data.data.slice(0, 3).map(a => {
+                                const date = a.created_at.split(' ')[0];
+                                return `
+                                                <tr class="border-b border-slate-50 dark:border-slate-800/50">
+                                                    <td class="py-2">${date}</td>
+                                                    <td class="py-2">${a.anxiety_level}</td>
+                                                    <td class="py-2 text-right font-bold text-primary">${a.anxiety_score}%</td>
+                                                </tr>
+                                            `;
+                            }).join('')}
+                                    </tbody>
+                                </table>
+                            `;
+                            container.setAttribute('data-loaded', 'true');
+                        } else {
+                            container.innerHTML = `<p class="text-xs text-slate-400 italic">No assessment history available.</p>`;
+                        }
+                    } catch (err) {
+                        container.innerHTML = `<p class="text-xs text-red-400">Failed to load history.</p>`;
+                    }
+                }
+
+                // ---------- Pagination UI ----------
+                function buildPageButtons(tp) {
+                    // show: 1 ... (p-1) p (p+1) ... tp  (max ~7 buttons)
+                    const p = currentPage;
+                    const pages = new Set([1, tp, p, p - 1, p + 1, p - 2, p + 2]);
+                    const arr = Array.from(pages).filter(n => n >= 1 && n <= tp).sort((a, b) => a - b);
+
+                    // insert ellipses
+                    const result = [];
+                    for (let i = 0; i < arr.length; i++) {
+                        result.push(arr[i]);
+                        if (i < arr.length - 1 && arr[i + 1] - arr[i] > 1) result.push('...');
+                    }
+                    return result;
+                }
+
+                function renderPagination(hide = false) {
+                    if (!paginationHost) return;
+
+                    // Replace the existing Load More button area content
+                    if (hide || filteredPatients.length === 0) {
+                        paginationHost.innerHTML = '';
+                        return;
+                    }
+
+                    const tp = totalPages();
+                    if (tp <= 1) {
+                        paginationHost.innerHTML = '';
+                        return;
+                    }
+
+                    const btns = buildPageButtons(tp);
+
+                    paginationHost.innerHTML = `
+      <div class="flex items-center gap-2 flex-wrap justify-center">
+        <button data-action="prev"
+          class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm font-semibold
+                 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}">
+          Prev
+        </button>
+
+        ${btns.map(b => {
+                        if (b === '...') {
+                            return `<span class="px-2 text-slate-400 select-none">…</span>`;
+                        }
+                        const active = b === currentPage;
+                        return `
+            <button data-page="${b}"
+              class="min-w-[40px] px-3 py-2 rounded-lg text-sm font-semibold border
+                     ${active
+                                ? 'bg-primary text-white border-primary'
+                                : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'}">
+              ${b}
+            </button>
+          `;
+                    }).join('')}
+
+        <button data-action="next"
+          class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm font-semibold
+                 ${currentPage === tp ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}">
+          Next
+        </button>
+
+        <span class="ml-2 text-xs text-slate-400">
+          Page ${currentPage} of ${tp}
+        </span>
+      </div>
+    `;
+
+                    // Bind click events (event delegation)
+                    paginationHost.onclick = (e) => {
+                        const btn = e.target.closest('button');
+                        if (!btn) return;
+
+                        const action = btn.getAttribute('data-action');
+                        const pageAttr = btn.getAttribute('data-page');
+
+                        if (action === 'prev' && currentPage > 1) setPage(currentPage - 1);
+                        if (action === 'next' && currentPage < tp) setPage(currentPage + 1);
+                        if (pageAttr) setPage(parseInt(pageAttr, 10));
+                    };
+                }
+
+                // Initial
+                fetchPatients();
+            })();
+    </script>
+</body>
+
+</html>

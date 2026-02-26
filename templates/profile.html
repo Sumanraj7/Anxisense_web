@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Profile &amp; Settings - AnxietySense Clinical Edition</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#106EBE",
+                        "mint": "#0FFCBE",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .clinical-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(16, 110, 190, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-base text-slate-900 dark:text-slate-100 font-display">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 flex flex-col bg-white dark:bg-slate-900 border-r border-primary/10 shadow-sm z-20">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-2xl">monitoring</span>
+                </div>
+                <div>
+                    <h1 class="text-primary font-bold text-lg leading-tight">AnxietySense</h1>
+                    <p class="text-primary/60 text-xs font-semibold uppercase tracking-wider">Clinical Edition</p>
+                </div>
+            </div>
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/dashboard">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">dashboard</span>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/quick-scan">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">biotech</span>
+                    <span class="font-medium">Scan</span>
+                </a>
+
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/patients">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">folder_open</span>
+                    <span class="font-medium">Records</span>
+                </a>
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/profile">
+                    <span
+                        class="material-symbols-outlined text-slate-400 group-hover:text-primary">account_circle</span>
+                    <span class="font-medium">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-primary/10">
+                <div class="flex items-center gap-3 p-2 rounded-lg bg-primary/5">
+                    <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden relative">
+                        <img id="nav-profile-img" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtqORVm3pVS9D_BYs_JoOLuFTS2bTiioo5AF8APG7zptSpRNE-LnNaDSMFam1BO8nIvwaNEMEN28u8DP28QENyDBzU1Y600FG-z4q4MNvIANBdbPM8MmW5y4TCnW3Zyktepq-ToBPQ-p6jScR7zn780C_TKZ0OJdqgrypW3s2Sn6gFnE33JThhYB9If5NCM_nGwG4Kh-_pF3uSbv-FNRqL-A49sTkXexMFBNTmgaFoevninShXLKw_GaIjefNMjbnXufn3_z66lDYl" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p id="nav-doctor-name" class="text-sm font-semibold truncate">Dr. Suman</p>
+                        <p id="nav-doctor-role" class="text-xs text-slate-500 truncate">Clinician</p>
+                    </div>
+                    <button
+                        onclick="try{sessionStorage.removeItem('authenticated'); sessionStorage.removeItem('loginEmail');}catch(e){}; window.location.href='/';"
+                        class="material-symbols-outlined text-slate-400 text-lg" title="Logout">logout</button>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto clinical-bg">
+            <div class="p-8 max-w-6xl mx-auto w-full">
+                <!-- Header & Breadcrumbs -->
+                <div class="mb-8">
+                    <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+                        <a class="hover:text-primary transition-colors" href="profile.html">Settings</a>
+                        <span class="material-symbols-outlined text-xs">chevron_right</span>
+                        <span class="text-slate-900 dark:text-white font-medium">Profile</span>
+                    </nav>
+                    <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">Profile
+                        &amp; Settings</h1>
+                    <p class="text-slate-500 dark:text-slate-400 mt-1">Manage your professional information and clinical
+                        details.</p>
+                </div>
+                <!-- Profile Picture Section -->
+                <div
+                    class="bg-white dark:bg-background-dark/80 border border-slate-200 dark:border-primary/20 rounded-xl p-6 mb-6 flex items-center gap-6 shadow-sm">
+                    <div class="relative group">
+                        <img id="profile-img-preview" alt="Profile Picture"
+                            class="h-24 w-24 rounded-full object-cover border-4 border-primary/20 transition-all group-hover:opacity-75"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBFodaD3WagJi5kf6KWXM884tYoMfJj-bEWdHyMK4Mmfo_MMQgwYlOlpQIwHaLc5m4tdXUM6sJHL5BtG40KZCziTCvzVdx5kYozN7Mhhu1VAyjLQawMri2S4R6CWGXgQhBiFo0XtTq2WczEHumTpA_zhiId7901FBESYTrQGNP13VVSM90G3ZbySU9jHMIM3ysVBL9thr6WhSKz9xRtLsaox3P0p-SzYFJz6z56gsRiyqpcjUROasT2h6ksXMv-GMaKOxOCqZMG3mn" />
+                        <button id="open-upload-modal"
+                            class="absolute bottom-0 right-0 bg-primary text-white p-1.5 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
+                            <span class="material-symbols-outlined text-base leading-none">photo_camera</span>
+                        </button>
+                        <input type="file" id="profile-file-input" class="hidden" accept="image/*" />
+                    </div>
+                    <div>
+                        <h3 id="profile-display-name"
+                            class="text-lg font-bold text-slate-900 dark:text-white leading-tight">Dr. Michael Chen</h3>
+                        <p class="text-primary font-medium text-sm">Clinical Practitioner • Dental Anxiety Specialist
+                        </p>
+                        <p class="text-slate-400 text-xs mt-1">Last active: Just now • ID: <span
+                                id="profile-display-id">8821-AZ</span></p>
+                    </div>
+                </div>
+                <!-- Settings Form -->
+                <div class="space-y-6">
+                    <!-- Section: Personal Information -->
+                    <section
+                        class="bg-white dark:bg-background-dark/80 border border-slate-200 dark:border-primary/20 rounded-xl overflow-hidden shadow-sm">
+                        <div
+                            class="px-6 py-4 border-b border-slate-100 dark:border-primary/10 bg-slate-50/50 dark:bg-white/5 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-xl">person</span>
+                            <h3 class="font-bold text-slate-800 dark:text-white">Personal Information</h3>
+                        </div>
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">First
+                                    Name</label>
+                                <input id="doctor-firstname"
+                                    class="w-full rounded-lg border-slate-200 dark:border-primary/30 bg-transparent focus:ring-primary focus:border-primary dark:text-white text-sm"
+                                    type="text" value="Michael" />
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Last
+                                    Name</label>
+                                <input id="doctor-lastname"
+                                    class="w-full rounded-lg border-slate-200 dark:border-primary/30 bg-transparent focus:ring-primary focus:border-primary dark:text-white text-sm"
+                                    type="text" value="Chen" />
+                            </div>
+                            <div class="space-y-2 md:col-span-2">
+                                <label
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Professional
+                                    Title</label>
+                                <input id="doctor-title"
+                                    class="w-full rounded-lg border-slate-200 dark:border-primary/30 bg-transparent focus:ring-primary focus:border-primary dark:text-white text-sm"
+                                    type="text" value="Senior Dental Surgeon &amp; Behavioral Specialist" />
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Section: Clinical Details -->
+                    <section
+                        class="bg-white dark:bg-background-dark/80 border border-slate-200 dark:border-primary/20 rounded-xl overflow-hidden shadow-sm">
+                        <div
+                            class="px-6 py-4 border-b border-slate-100 dark:border-primary/10 bg-slate-50/50 dark:bg-white/5 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-xl">medical_services</span>
+                            <h3 class="font-bold text-slate-800 dark:text-white">Professional &amp; Clinic Details</h3>
+                        </div>
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Specialization</label>
+                                <select id="doctor-specialization"
+                                    class="w-full rounded-lg border-slate-200 dark:border-primary/30 bg-transparent focus:ring-primary focus:border-primary dark:text-white text-sm">
+                                    <option value="dental">Dental</option>
+                                    <option value="psychology">Psychology</option>
+                                    <option value="pediatrics">Pediatrics</option>
+                                    <option value="general">General Medicine</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">License
+                                    Number</label>
+                                <input
+                                    class="w-full rounded-lg border-slate-200 dark:border-primary/30 bg-transparent focus:ring-primary focus:border-primary dark:text-white text-sm"
+                                    type="text" value="DDS-9988210" />
+                            </div>
+                            <div class="space-y-2 md:col-span-2">
+                                <label
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Clinic/Hospital
+                                    Name</label>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">apartment</span>
+                                    <input id="doctor-clinic"
+                                        class="w-full pl-10 rounded-lg border-slate-200 dark:border-primary/30 bg-transparent focus:ring-primary focus:border-primary dark:text-white text-sm"
+                                        type="text" value="St. Jude Medical Center - Dental Wing" />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Section: Contact Information -->
+                    <section
+                        class="bg-white dark:bg-background-dark/80 border border-slate-200 dark:border-primary/20 rounded-xl overflow-hidden shadow-sm">
+                        <div
+                            class="px-6 py-4 border-b border-slate-100 dark:border-primary/10 bg-slate-50/50 dark:bg-white/5 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-xl">contact_mail</span>
+                            <h3 class="font-bold text-slate-800 dark:text-white">Contact Information</h3>
+                        </div>
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email
+                                    Address</label>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">alternate_email</span>
+                                    <input id="doctor-email"
+                                        class="w-full pl-10 rounded-lg border-slate-200 dark:border-primary/30 bg-transparent focus:ring-primary focus:border-primary dark:text-white text-sm"
+                                        type="email" value="m.chen@stjude.medical" readonly />
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Phone
+                                    Number</label>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">call</span>
+                                    <input id="doctor-phone"
+                                        class="w-full pl-10 rounded-lg border-slate-200 dark:border-primary/30 bg-transparent focus:ring-primary focus:border-primary dark:text-white text-sm"
+                                        type="tel" value="+1 (555) 012-3456" />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Form Actions -->
+                    <div class="flex items-center justify-end gap-4 py-4">
+                        <button id="discardBtn"
+                            class="px-6 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+                            Discard Changes
+                        </button>
+                        <button id="saveProfileBtn"
+                            class="bg-primary hover:bg-primary/90 text-white px-8 py-2.5 rounded-lg font-bold text-sm shadow-lg shadow-primary/20 transition-all active:scale-95 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+                <!-- Account Security Footer -->
+                <div class="mt-12 pt-8 border-t border-slate-200 dark:border-primary/10 text-center">
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Your account is secured with Enterprise
+                        Encryption (AES-256)</p>
+                    <div class="flex justify-center gap-4">
+                        <a class="text-primary text-xs font-bold flex items-center gap-1 hover:underline"
+                            href="profile.html#change-password">
+                            <span class="material-symbols-outlined text-sm">lock_reset</span> Change Password
+                        </a>
+                        <span class="text-slate-300 dark:text-slate-700">|</span>
+                        <a class="text-primary text-xs font-bold flex items-center gap-1 hover:underline"
+                            href="profile.html#2fa">
+                            <span class="material-symbols-outlined text-sm">security</span> 2FA Settings
+                        </a>
+                    </div>
+                    <!-- Custom Camera Modal -->
+                    <div id="image-upload-modal"
+                        class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+                        <div
+                            class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-lg overflow-hidden border border-primary/10 shadow-2xl animate-in zoom-in-95 duration-300">
+                            <div
+                                class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                                <h3 class="font-black text-xl text-slate-900 dark:text-white">Update Profile Picture
+                                </h3>
+                                <button id="close-modal-btn"
+                                    class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400">
+                                    <span class="material-symbols-outlined">close</span>
+                                </button>
+                            </div>
+                            <div class="p-6 space-y-6">
+                                <!-- Camera View -->
+                                <div id="camera-container"
+                                    class="hidden relative aspect-square rounded-2xl bg-slate-100 dark:bg-slate-800 overflow-hidden border-2 border-primary/10">
+                                    <video id="camera-video" class="w-full h-full object-cover scale-x-[-1]" autoplay
+                                        playsinline></video>
+                                    <div
+                                        class="absolute inset-0 border-[40px] border-slate-900/40 rounded-full scale-[0.8] pointer-events-none">
+                                    </div>
+                                    <canvas id="camera-canvas" class="hidden"></canvas>
+                                </div>
+
+                                <!-- Options Grid -->
+                                <div id="upload-options" class="grid grid-cols-2 gap-4">
+                                    <button id="capture-btn"
+                                        class="flex flex-col items-center justify-center p-8 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-primary hover:bg-primary/5 transition-all group">
+                                        <span
+                                            class="material-symbols-outlined text-4xl text-slate-300 group-hover:text-primary mb-3">photo_camera</span>
+                                        <span
+                                            class="text-sm font-bold text-slate-600 dark:text-slate-400 group-hover:text-primary">Take
+                                            Photo</span>
+                                    </button>
+                                    <button id="upload-file-btn"
+                                        class="flex flex-col items-center justify-center p-8 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-primary hover:bg-primary/5 transition-all group">
+                                        <span
+                                            class="material-symbols-outlined text-4xl text-slate-300 group-hover:text-primary mb-3">upload_file</span>
+                                        <span
+                                            class="text-sm font-bold text-slate-600 dark:text-slate-400 group-hover:text-primary">Upload
+                                            File</span>
+                                    </button>
+                                </div>
+
+                                <!-- Action States -->
+                                <div id="camera-actions" class="hidden grid grid-cols-2 gap-4">
+                                    <button id="retake-btn"
+                                        class="px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-sm text-slate-600 dark:text-slate-400">Retake</button>
+                                    <button id="confirm-capture-btn"
+                                        class="px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20">Use
+                                        Photo</button>
+                                </div>
+
+                                <div id="snapshot-btn-container" class="hidden flex justify-center">
+                                    <button id="take-snapshot-btn"
+                                        class="w-16 h-16 rounded-full bg-primary border-4 border-white dark:border-slate-900 shadow-xl flex items-center justify-center text-white active:scale-90 transition-transform">
+                                        <span class="material-symbols-outlined text-3xl">camera</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </main>
+    </div>
+
+    <script>
+            (function () {
+                const doctorId = sessionStorage.getItem('doctor_id');
+                const firstNameEl = document.getElementById('doctor-firstname');
+                const lastNameEl = document.getElementById('doctor-lastname');
+                const titleEl = document.getElementById('doctor-title');
+                const specializationEl = document.getElementById('doctor-specialization');
+                const clinicEl = document.getElementById('doctor-clinic');
+                const emailEl = document.getElementById('doctor-email');
+                const phoneEl = document.getElementById('doctor-phone');
+                const saveBtn = document.getElementById('saveProfileBtn');
+                const discardBtn = document.getElementById('discardBtn');
+                const displayNameEl = document.getElementById('profile-display-name');
+                const displayIdEl = document.getElementById('profile-display-id');
+                const profilePreviewImg = document.getElementById('profile-img-preview');
+
+                // Camera & Upload Elements
+                const uploadModal = document.getElementById('image-upload-modal');
+                const openModalBtn = document.getElementById('open-upload-modal');
+                const closeModalBtn = document.getElementById('close-modal-btn');
+                const captureBtn = document.getElementById('capture-btn');
+                const uploadFileBtn = document.getElementById('upload-file-btn');
+                const fileInput = document.getElementById('profile-file-input');
+                const cameraContainer = document.getElementById('camera-container');
+                const uploadOptions = document.getElementById('upload-options');
+                const video = document.getElementById('camera-video');
+                const canvas = document.getElementById('camera-canvas');
+                const snapshotBtnContainer = document.getElementById('snapshot-btn-container');
+                const takeSnapshotBtn = document.getElementById('take-snapshot-btn');
+                const cameraActions = document.getElementById('camera-actions');
+                const retakeBtn = document.getElementById('retake-btn');
+                const confirmCaptureBtn = document.getElementById('confirm-capture-btn');
+
+                let stream = null;
+                let capturedImageData = null;
+                let currentProfileImage = null;
+
+                if (!doctorId) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                async function fetchProfile() {
+                    try {
+                        const response = await fetch(`http://127.0.0.1:5000/api/doctor/profile?doctorid=${doctorId}`);
+                        const res = await response.json();
+                        if (res.success && res.data) {
+                            const dr = res.data;
+                            const names = (dr.fullname || dr.name || '').split(' ');
+                            if (firstNameEl) firstNameEl.value = names[0] || '';
+                            if (lastNameEl) lastNameEl.value = names.slice(1).join(' ') || '';
+                            if (emailEl) emailEl.value = dr.email || '';
+                            if (phoneEl) phoneEl.value = dr.phone || '';
+                            if (specializationEl) specializationEl.value = dr.specialization || 'dental';
+                            if (clinicEl) clinicEl.value = dr.clinic_name || '';
+
+                            if (displayNameEl) displayNameEl.textContent = dr.fullname || dr.name || 'Doctor';
+                            if (displayIdEl) displayIdEl.textContent = doctorId;
+
+                            if (dr.profile_image) {
+                                currentProfileImage = dr.profile_image;
+                                profilePreviewImg.src = dr.profile_image;
+                                updateGlobalProfileImage(dr.profile_image);
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Fetch profile error:', err);
+                    }
+                }
+
+                function updateGlobalProfileImage(base64) {
+                    // Update global sidebar images if they exist
+                    document.querySelectorAll('aside img, header img').forEach(img => {
+                        img.src = base64;
+                    });
+                }
+
+                // Modal Logic
+                openModalBtn.onclick = () => uploadModal.classList.remove('hidden');
+                closeModalBtn.onclick = () => {
+                    uploadModal.classList.add('hidden');
+                    stopCamera();
+                    resetModalUI();
+                };
+
+                function resetModalUI() {
+                    cameraContainer.classList.add('hidden');
+                    uploadOptions.classList.remove('hidden');
+                    snapshotBtnContainer.classList.add('hidden');
+                    cameraActions.classList.add('hidden');
+                    capturedImageData = null;
+                }
+
+                // File Upload Logic
+                uploadFileBtn.onclick = () => fileInput.click();
+                fileInput.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            capturedImageData = event.target.result;
+                            profilePreviewImg.src = capturedImageData;
+                            uploadModal.classList.add('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+
+                // Camera Capture Logic
+                captureBtn.onclick = async () => {
+                    uploadOptions.classList.add('hidden');
+                    cameraContainer.classList.remove('hidden');
+                    snapshotBtnContainer.classList.remove('hidden');
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                        video.srcObject = stream;
+                    } catch (err) {
+                        console.error('Camera error:', err);
+                        alert('Could not access camera.');
+                        resetModalUI();
+                    }
+                };
+
+                takeSnapshotBtn.onclick = () => {
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    ctx.translate(canvas.width, 0);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(video, 0, 0);
+                    capturedImageData = canvas.toDataURL('image/jpeg', 0.8);
+
+                    video.classList.add('hidden');
+                    snapshotBtnContainer.classList.add('hidden');
+                    cameraActions.classList.remove('hidden');
+                };
+
+                retakeBtn.onclick = () => {
+                    video.classList.remove('hidden');
+                    snapshotBtnContainer.classList.remove('hidden');
+                    cameraActions.classList.add('hidden');
+                    capturedImageData = null;
+                };
+
+                confirmCaptureBtn.onclick = () => {
+                    profilePreviewImg.src = capturedImageData;
+                    stopCamera();
+                    uploadModal.classList.add('hidden');
+                };
+
+                function stopCamera() {
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                        stream = null;
+                    }
+                    video.classList.remove('hidden');
+                }
+
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', async () => {
+                        const payload = {
+                            doctorid: doctorId,
+                            fullname: `${firstNameEl.value} ${lastNameEl.value}`.trim(),
+                            email: emailEl.value,
+                            phone: phoneEl ? phoneEl.value : '',
+                            specialization: specializationEl ? specializationEl.value : '',
+                            clinic_name: clinicEl ? clinicEl.value : ''
+                        };
+
+                        if (capturedImageData) {
+                            payload.profile_image = capturedImageData;
+                        }
+
+                        saveBtn.disabled = true;
+                        const originalText = saveBtn.innerHTML;
+                        saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-base">sync</span> Saving...';
+
+                        try {
+                            const response = await fetch('http://127.0.0.1:5000/api/doctor/profile', {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            const res = await response.json();
+                            if (res.success) {
+                                alert('Profile updated successfully!');
+                                if (displayNameEl) displayNameEl.textContent = payload.fullname;
+
+                                // Update sidebar and dashboard elements instantly
+                                const navName = document.getElementById('nav-doctor-name');
+                                if (navName) navName.textContent = payload.fullname;
+
+                                const navRole = document.getElementById('nav-doctor-role');
+                                if (navRole && payload.specialization) {
+                                    navRole.textContent = payload.specialization.charAt(0).toUpperCase() + payload.specialization.slice(1);
+                                }
+
+                                const welcomeHeading = document.getElementById('welcomeHeading');
+                                if (welcomeHeading) {
+                                    const displayName = payload.fullname.includes('Dr.') ? payload.fullname : payload.fullname.split(' ')[0];
+                                    welcomeHeading.textContent = `Welcome, ${displayName}`;
+                                }
+
+                                if (payload.profile_image) {
+                                    updateGlobalProfileImage(payload.profile_image);
+                                    currentProfileImage = payload.profile_image;
+                                }
+                                sessionStorage.setItem('doctor_name', payload.fullname);
+                            } else {
+                                alert(res.message || 'Failed to update profile.');
+                            }
+                        } catch (err) {
+                            console.error('Update profile error:', err);
+                            alert('Could not connect to server.');
+                        } finally {
+                            saveBtn.disabled = false;
+                            saveBtn.innerHTML = originalText;
+                        }
+                    });
+                }
+
+                if (discardBtn) {
+                    discardBtn.addEventListener('click', () => {
+                        fetchProfile();
+                    });
+                }
+
+                fetchProfile();
+            })();
+    </script>
+</body>
+
+</html>
+
+<script src="nav.js"></script>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Doctor Login - OTP Verification</title>
+    <!-- Tailwind CSS v3 CDN with plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style data-purpose="custom-colors">
+        :root {
+            --medical-green: #106EBE;
+            --medical-bg: #f8fafc;
+            --input-border: #e2e8f0;
+            --text-header: #106EBE;
+            --text-sub: #64748b;
+        }
+
+        .bg-medical-green {
+            background-color: var(--medical-green);
+        }
+
+        .text-medical-green {
+            color: var(--medical-green);
+        }
+
+        .text-header-green {
+            color: var(--text-header);
+        }
+
+        .text-sub-green {
+            color: var(--text-sub);
+        }
+
+        .border-input-light {
+            border-color: var(--input-border);
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen flex items-center justify-center font-sans antialiased bg-gradient-to-br from-[#106EBE] via-[#0FFCBE] to-[#106EBE]">
+    <!-- BEGIN: MainContainer -->
+    <main class="w-full max-w-md p-6" data-purpose="login-container">
+        <!-- BEGIN: HeaderSection -->
+        <header class="text-center mb-8" data-purpose="header-section">
+            <!-- Shield Icon Placeholder -->
+            <div
+                class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-sm mb-6 border border-teal-50">
+                <svg class="w-10 h-10 text-medical-green" fill="none" stroke="currentColor" stroke-width="1.5"
+                    viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 4.407 10.18 10 10.18s10-4.588 10-10.18c0-1.29-.204-2.532-.586-3.75a11.959 11.959 0 01-9.402-3.75z"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-header-green mb-2">Doctor Login</h1>
+            <p class="text-sub-green font-medium">Secure access for medical professionals</p>
+        </header>
+        <!-- END: HeaderSection -->
+        <!-- BEGIN: LoginFormSection -->
+        <section class="bg-white rounded-3xl p-8 border border-teal-50 shadow-sm mb-6" data-purpose="otp-form-card">
+            <form id="otpForm" class="space-y-6" onsubmit="return handleOTP(event);">
+                <!-- Email Field (Read-only as per screenshot) -->
+                <div data-purpose="input-group">
+                    <label class="block text-medical-green font-bold mb-2">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <!-- Mail Icon -->
+                            <svg class="h-5 w-5 text-medical-green" fill="currentColor" viewbox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a1.75 1.75 0 01-1.644 0L1.5 8.67z">
+                                </path>
+                                <path
+                                    d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a.25.25 0 00.272 0L22.5 6.908z">
+                                </path>
+                            </svg>
+                        </div>
+                        <input id="email"
+                            class="block w-full pl-12 pr-4 py-4 border-input-light rounded-xl bg-teal-50/10 text-slate-700 font-medium focus:ring-0 focus:border-input-light"
+                            readonly="" type="email" value="" />
+                    </div>
+                </div>
+                <!-- OTP Field -->
+                <div data-purpose="input-group">
+                    <label class="block text-medical-green font-bold mb-2">Enter OTP</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <!-- Info Icon -->
+                            <svg class="h-5 w-5 text-teal-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <input id="otp"
+                            class="block w-full pl-12 pr-4 py-4 border-input-light rounded-xl placeholder-slate-400 focus:ring-medical-green focus:border-medical-green outline-none"
+                            placeholder="Enter 6-digit OTP" type="text" />
+                    </div>
+                </div>
+                <!-- Action Button -->
+                <button
+                    class="w-full bg-medical-green hover:bg-[#0d5a9c] text-white font-bold py-4 rounded-xl transition-colors duration-200"
+                    type="submit">
+                    Verify &amp; Login
+                </button>
+                <!-- Resend Link -->
+                <div class="text-center">
+                    <a class="text-medical-green font-bold hover:underline decoration-2 underline-offset-4"
+                        href="/otp#resend">Resend OTP</a>
+                </div>
+            </form>
+        </section>
+        <!-- END: LoginFormSection -->
+        <!-- BEGIN: PrivacyFooter -->
+        <footer class="bg-blue-50/50 rounded-2xl p-5 flex items-start space-x-4 border border-blue-100/50"
+            data-purpose="privacy-section">
+            <div class="mt-1">
+                <!-- Small Shield Icon -->
+                <svg class="w-6 h-6 text-medical-green" fill="none" stroke="currentColor" stroke-width="1.5"
+                    viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 4.407 10.18 10 10.18s10-4.588 10-10.18c0-1.29-.204-2.532-.586-3.75a11.959 11.959 0 01-9.402-3.75z"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            <div>
+                <h4 class="text-header-green font-bold text-sm mb-0.5">Privacy &amp; Security</h4>
+                <p class="text-sub-green text-xs leading-relaxed">
+                    Patient data is encrypted and secure. All assessments are HIPAA compliant.
+                </p>
+            </div>
+        </footer>
+        <!-- END: PrivacyFooter -->
+    </main>
+    <!-- END: MainContainer -->
+    <script>
+        async function handleOTP(e) {
+            e.preventDefault();
+            const otpInput = document.getElementById('otp');
+            const emailInput = document.getElementById('email');
+            const otp = otpInput ? otpInput.value.trim() : '';
+            const email = emailInput ? emailInput.value : '';
+
+            if (!/^\d{6}$/.test(otp)) {
+                alert('Please enter a valid 6-digit OTP.');
+                return false;
+            }
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Verifying...';
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/doctor/verify-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, otp })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Store doctor info in sessionStorage
+                    sessionStorage.setItem('authenticated', 'true');
+                    sessionStorage.setItem('doctor_id', data.doctor.id);
+                    sessionStorage.setItem('doctor_name', data.doctor.username);
+                    sessionStorage.setItem('doctor_email', data.doctor.email);
+                    if (data.doctor.profile_image) {
+                        sessionStorage.setItem('doctor_profile_image', data.doctor.profile_image);
+                    }
+
+                    window.location.href = '/dashboard';
+                } else {
+                    alert(data.message || 'Verification failed. Please try again.');
+                }
+            } catch (err) {
+                console.error('Error during OTP verification:', err);
+                alert('An error occurred. Please check your connection and try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            try {
+                const email = sessionStorage.getItem('loginEmail');
+                if (!email) {
+                    // No email saved -> go back to login
+                    window.location.href = '/';
+                    return;
+                }
+                const emailInput = document.getElementById('email');
+                if (emailInput) emailInput.value = email;
+            } catch (err) {
+                // On error, fallback to login
+                window.location.href = '/';
+            }
+        });
+    </script>
+    <script src="nav.js"></script>
+</body>
+
+</html>

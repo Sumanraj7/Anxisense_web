@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AnxietySense - Patient Information</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#106EBE",
+                        "mint": "#0FFCBE",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .medical-grid {
+            background-image: radial-gradient(circle, #106EBE08 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark min-h-screen font-display text-base text-slate-900 dark:text-slate-100">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden medical-grid">
+        <!-- Top Navigation Bar -->
+        <header
+            class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-12 lg:px-24 py-4">
+            <div class="mx-auto flex max-w-7xl items-center justify-between">
+                <div class="flex items-center gap-3 text-primary">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                        <span class="material-symbols-outlined text-primary font-bold">clinical_notes</span>
+                    </div>
+                    <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">AnxietySense</h2>
+                </div>
+                <div class="hidden md:flex items-center gap-8">
+                    <nav class="flex items-center gap-6">
+                        <a class="site-nav-link text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 transition-colors"
+                            href="/dashboard">Dashboard</a>
+                        <a class="site-nav-link text-sm font-semibold text-primary dark:text-primary transition-colors border-b-2 border-primary pb-1"
+                            href="/patients">Patients</a>
+                        <a class="site-nav-link text-sm font-semibold text-slate-600 hover:text-primary dark:text-slate-300 transition-colors"
+                            href="/quick-scan">Assessments</a>
+                    </nav>
+                    <div class="h-10 w-10 overflow-hidden rounded-full border-2 border-primary/20 bg-primary/10">
+                        <img id="nav-profile-img" alt="User Profile" class="h-full w-full object-cover"
+                            data-alt="Profile picture of a medical professional"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9_GUjo3wSZrv1TlCOnOC9banX9wmfzKo20VGajK4wheoocnANoDPYP4BgJZQFspPyX5aBnAhkDY2uwb5AiCICmUJFiMiziD2GxwOoEW1gBh8HPdGRBHFJGDyKjS--XGqI-Sjvl_7PX9cobAWqmJCiFAs-XndnNZYaYW263h7rVB9Q4JO9JrJ4MOTBnVVKEV9fbbAeOBkBYdaSTE3-RK4CcItsAco5x6EPP3RRTB6ccXeShHFo9IZN5HlPfa8hOouPYry_N6PuC2B5" />
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 px-6 py-10 md:px-12 lg:px-24">
+            <div class="mx-auto max-w-4xl">
+                <!-- Header with Back Button -->
+                <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div class="space-y-2">
+                        <button onclick="window.location.href='/dashboard'"
+                            class="group flex items-center gap-2 text-sm font-bold text-primary transition-transform hover:-translate-x-1">
+                            <span class="material-symbols-outlined text-lg">arrow_back</span>
+                            <span>Back to Dashboard</span>
+                        </button>
+                        <h1 class="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100">
+                            Patient
+                            Information</h1>
+                        <p class="text-lg font-medium text-primary/80">Enter patient details for assessment</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                        <span>Step 1 of 3</span>
+                        <div class="h-1.5 w-24 rounded-full bg-slate-200 dark:bg-slate-800">
+                            <div class="h-full w-1/3 rounded-full bg-primary"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Central Form Card -->
+                <div
+                    class="relative rounded-2xl bg-white dark:bg-slate-900/50 p-8 shadow-xl shadow-primary/5 border border-primary/10">
+                    <!-- Avatar Header -->
+                    <div class="absolute -top-12 left-1/2 -translate-x-1/2">
+                        <div
+                            class="flex h-24 w-24 items-center justify-center rounded-full border-4 border-background-light bg-primary text-white shadow-lg">
+                            <span class="material-symbols-outlined text-5xl">person</span>
+                        </div>
+                    </div>
+                    <form class="mt-12 space-y-6">
+                        <!-- Patient Identity Row -->
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Patient ID</label>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary/50">fingerprint</span>
+                                    <input id="patient-id"
+                                        class="w-full rounded-lg border-primary/20 bg-background-light/50 py-3 pl-10 pr-4 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800/50 dark:text-slate-100"
+                                        placeholder="e.g., P001234" type="text" />
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Full Name</label>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary/50">badge</span>
+                                    <input id="patient-name"
+                                        class="w-full rounded-lg border-primary/20 bg-background-light/50 py-3 pl-10 pr-4 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800/50 dark:text-slate-100"
+                                        placeholder="Enter patient full name" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Demographics & Procedure Row -->
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Age</label>
+                                <input id="patient-age"
+                                    class="w-full rounded-lg border-primary/20 bg-background-light/50 py-3 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800/50 dark:text-slate-100"
+                                    placeholder="Years" type="number" />
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Gender</label>
+                                <select id="patient-gender"
+                                    class="w-full rounded-lg border-primary/20 bg-background-light/50 py-3 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800/50 dark:text-slate-100">
+                                    <option disabled="" selected="" value="">Select Gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Non-binary</option>
+                                    <option>Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Procedure
+                                    Type</label>
+                                <select id="patient-procedure"
+                                    class="w-full rounded-lg border-primary/20 bg-background-light/50 py-3 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800/50 dark:text-slate-100">
+                                    <option disabled="" selected="" value="">Select Procedure</option>
+                                    <option>General Surgery</option>
+                                    <option>Dental Procedure</option>
+                                    <option>Diagnostic Imaging</option>
+                                    <option>Minor Outpatient</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Health Issues Textarea -->
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Current Health
+                                Issues</label>
+                            <textarea id="patient-health-issues"
+                                class="w-full rounded-lg border-primary/20 bg-background-light/50 p-4 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800/50 dark:text-slate-100"
+                                placeholder="List any chronic conditions or acute symptoms..." rows="3"></textarea>
+                        </div>
+                        <!-- Anxiety History Textarea -->
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Previous Anxiety
+                                History</label>
+                            <textarea id="patient-anxiety-history"
+                                class="w-full rounded-lg border-primary/20 bg-background-light/50 p-4 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800/50 dark:text-slate-100"
+                                placeholder="Describe past experiences with procedural anxiety or related conditions..."
+                                rows="3"></textarea>
+                        </div>
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col-reverse gap-4 pt-6 md:flex-row md:justify-end">
+                            <button
+                                class="inline-flex items-center justify-center rounded-lg border-2 border-primary/20 px-8 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary/5 dark:hover:bg-primary/10"
+                                type="button">
+                                Cancel
+                            </button>
+                            <button id="btn-save-only"
+                                class="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-primary px-8 py-3 text-sm font-bold text-primary transition-all hover:bg-primary/5 active:scale-95"
+                                type="button">
+                                <span class="material-symbols-outlined text-xl">save</span>
+                                Save Record Only
+                            </button>
+                            <button id="btn-proceed-scan"
+                                class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-8 py-3 text-sm font-bold text-white shadow-lg shadow-primary/30 transition-all hover:bg-primary/90 hover:shadow-xl active:scale-95"
+                                type="button">
+                                <span class="material-symbols-outlined text-xl">face_6</span>
+                                Proceed to Facial Scan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Compliance Footer -->
+                <div class="mt-8 flex items-start gap-3 rounded-xl bg-primary/5 p-4 border border-primary/10">
+                    <span class="material-symbols-outlined text-primary mt-0.5">verified_user</span>
+                    <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                        <span class="font-bold text-primary">Note:</span> Patient information is encrypted and stored
+                        securely in compliance with <span class="font-bold">HIPAA regulations</span>. No biometric data
+                        is stored permanently without explicit consent.
+                    </p>
+                </div>
+            </div>
+        </main>
+        <footer class="mt-auto px-6 py-8 md:px-12 lg:px-24">
+            <div
+                class="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-slate-400">
+                <p>© 2024 AnxietySense Clinical Intelligence. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a class="hover:text-primary" href="/privacy">Privacy Policy</a>
+                    <a class="hover:text-primary" href="/terms">Terms of Service</a>
+                    <a class="hover:text-primary" href="/help">Help Center</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="nav.js"></script>
+    <script>
+        const proceedBtn = document.getElementById('btn-proceed-scan');
+        const saveOnlyBtn = document.getElementById('btn-save-only');
+
+        async function savePatient(isScanFlow) {
+            const idEl = document.getElementById('patient-id');
+            const nameEl = document.getElementById('patient-name');
+            const ageEl = document.getElementById('patient-age');
+            const genderEl = document.getElementById('patient-gender');
+            const procedureEl = document.getElementById('patient-procedure');
+            const healthEl = document.getElementById('patient-health-issues');
+            const anxietyEl = document.getElementById('patient-anxiety-history');
+
+            const patientIdCode = idEl ? idEl.value.trim() : '';
+            const patientName = nameEl ? nameEl.value.trim() : '';
+            const doctorId = sessionStorage.getItem('doctor_id');
+
+            if (!patientIdCode || !patientName) {
+                alert('Please enter patient full name and ID before proceeding.');
+                return;
+            }
+
+            // Android Compatibility: Ensure patientID is numeric
+            if (!/^\d+$/.test(patientIdCode)) {
+                alert('Patient ID must be a numeric value for compatibility with existing systems.');
+                return;
+            }
+
+            if (!doctorId) {
+                alert('Doctor session not found. Please log in again.');
+                window.location.href = '/';
+                return;
+            }
+
+            const payload = {
+                doctorid: doctorId,
+                patientid: patientIdCode,
+                fullname: patientName,
+                age: ageEl ? ageEl.value : '',
+                gender: genderEl ? genderEl.value : '',
+                proceduretype: procedureEl ? procedureEl.value : '',
+                healthissue: healthEl ? healthEl.value : '',
+                previousanxietyhistory: anxietyEl ? anxietyEl.value : ''
+            };
+
+            const btn = isScanFlow ? proceedBtn : saveOnlyBtn;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-xl">sync</span> Processing...';
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/patients', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const resData = await response.json();
+
+                if (response.ok && resData.success) {
+                    sessionStorage.setItem('db_patient_id', resData.data.id);
+                    sessionStorage.setItem('patientName', patientName);
+                    sessionStorage.setItem('patientId', patientIdCode);
+                    sessionStorage.setItem('patientAge', ageEl ? ageEl.value : '');
+
+                    if (isScanFlow) {
+                        const target = `/facial-scan?name=${encodeURIComponent(patientName)}&id=${encodeURIComponent(patientIdCode)}&age=${encodeURIComponent(ageEl ? ageEl.value : '')}`;
+                        window.location.href = target;
+                    } else {
+                        alert('Patient record saved successfully.');
+                        window.location.href = '/patients';
+                    }
+                } else {
+                    alert(resData.message || 'Failed to save patient information.');
+                }
+            } catch (err) {
+                console.error('Error saving patient:', err);
+                if (isScanFlow) {
+                    alert('Backend server not reachable. Proceeding with offline-only mode.');
+                    sessionStorage.setItem('patientName', patientName);
+                    sessionStorage.setItem('patientId', patientIdCode);
+                    window.location.href = `/facial-scan?name=${encodeURIComponent(patientName)}&id=${encodeURIComponent(patientIdCode)}`;
+                } else {
+                    alert('Error: Backend server not reachable.');
+                }
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        if (proceedBtn) {
+            proceedBtn.addEventListener('click', () => savePatient(true));
+        }
+        if (saveOnlyBtn) {
+            saveOnlyBtn.addEventListener('click', () => savePatient(false));
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AnxietySense Clinical Edition</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#106EBE",
+                        "mint": "#0FFCBE",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .active-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body
+    class="font-display text-base text-slate-900 dark:text-slate-100 min-h-screen flex flex-col bg-gradient-to-br from-[#106EBE] to-[#0FFCBE]">
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 flex flex-col bg-white dark:bg-slate-900 border-r border-primary/10 shadow-sm z-20">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-2xl">monitoring</span>
+                </div>
+                <div>
+                    <h1 class="text-primary font-bold text-lg leading-tight">AnxietySense</h1>
+                    <p class="text-primary/60 text-xs font-semibold uppercase tracking-wider">Clinical Edition</p>
+                </div>
+            </div>
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/dashboard">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">dashboard</span>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/quick-scan">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">biotech</span>
+                    <span class="font-medium">Scan</span>
+                </a>
+
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/patients">
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">folder_open</span>
+                    <span class="font-medium">Records</span>
+                </a>
+                <a class="site-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group"
+                    href="/profile">
+                    <span
+                        class="material-symbols-outlined text-slate-400 group-hover:text-primary">account_circle</span>
+                    <span class="font-medium">Profile</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-primary/10">
+                <div class="flex items-center gap-3 p-2 rounded-lg bg-primary/5">
+                    <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden relative">
+                        <img id="nav-profile-img" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtqORVm3pVS9D_BYs_JoOLuFTS2bTiioo5AF8APG7zptSpRNE-LnNaDSMFam1BO8nIvwaNEMEN28u8DP28QENyDBzU1Y600FG-z4q4MNvIANBdbPM8MmW5y4TCnW3Zyktepq-ToBPQ-p6jScR7zn780C_TKZ0OJdqgrypW3s2Sn6gFnE33JThhYB9If5NCM_nGwG4Kh-_pF3uSbv-FNRqL-A49sTkXexMFBNTmgaFoevninShXLKw_GaIjefNM3bnXufn3_z66lDYl" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p id="nav-doctor-name" class="text-sm font-semibold truncate">Dr. Suman</p>
+                        <p id="nav-doctor-role" class="text-xs text-slate-500 truncate">Clinician</p>
+                    </div>
+                    <button
+                        onclick="try{sessionStorage.removeItem('authenticated'); sessionStorage.removeItem('loginEmail');}catch(e){}; window.location.href='/';"
+                        class="material-symbols-outlined text-slate-400 text-lg" title="Logout">logout</button>
+                </div>
+            </div>
+        </aside>
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <!-- Top Navigation Header -->
+            <header
+                class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 md:px-10 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="size-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl">psychology</span>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold leading-tight tracking-tight text-primary">AnxietySense</h2>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-primary/60">Clinical Edition</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="logoutBtn"
+                        class="p-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                        title="Logout">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                    <!-- <div class="size-10 rounded-full border-2 border-primary/20 p-0.5 overflow-hidden">
+                        <img class="w-full h-full object-cover rounded-full"
+                            data-alt="Professional profile portrait of a doctor"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtqORVm3pVS9D_BYs_JoOLuFTS2bTiioo5AF8APG7zptSpRNE-LnNaDSMFam1BO8nIvwaNEMEN28u8DP28QENyDBzU1Y600FG-z4q4MNvIANBdbPM8MmW5y4TCnW3Zyktepq-ToBPQ-p6jScR7zn780C_TKZ0OJdqgrypW3s2Sn6gFnE33JThhYB9If5NCM_nGwG4Kh-_pF3uSbv-FNRqL-A49sTkXexMFBNTmgaFoevninShXLKw_GaIjefNM3bnXufn3_z66lDYl" />
+                    </div> -->
+                </div>
+            </header>
+            <main class="flex-1 max-w-5xl mx-auto w-full p-4 md:p-8 space-y-8 pb-32">
+                <!-- Welcome Greeting -->
+                <section class="space-y-1">
+                    <h1 id="welcomeHeading"
+                        class="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-slate-50">
+                        Welcome, Suman
+                    </h1>
+                    <p id="welcomeContext" class="text-primary font-medium flex items-center gap-2"
+                        style="color:white;">
+                        <span class="material-symbols-outlined text-sm">medical_services</span>
+                        City General Hospital • Anesthesiologist
+                    </p>
+                </section>
+                <!-- Hero Assessment Card -->
+                <section
+                    class="group relative overflow-hidden rounded-xl bg-white dark:bg-slate-900 border border-primary/10 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="relative w-full md:w-2/5 aspect-video md:aspect-auto min-h-[200px] overflow-hidden">
+                            <img class="absolute inset-0 w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 transition-transform duration-500"
+                                data-alt="Abstract medical AI visualization with facial scanning nodes"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-FbPYytMFpVheyZ0EBtElLIsf5SjABHqwZo5dhcHc2h1LdNTrzanBzDkOvJzErCrVlzeAD9M2x9-joH42H5Jg5E9xj4CB6GdOPdUXqPj7N59KuFuk0lm8gUD5ykEc0iVVBB7d9QFAwPrbVyx7OAwoy5tgtHHryVFRnOXEXoLSzOm1r27Vn4Htvvvljnhclho3wf6AF50s8s0nRaQp46yVW91Ybvh5_8msS_sKQwJl8MzXf1z2m90dfgrBVx7B5G-DCoQvrKp3gmCk" />
+                            <div class="absolute inset-0 bg-gradient-to-r from-primary/30 to-mint/10"></div>
+                        </div>
+                        <div class="flex-1 p-6 md:p-10 flex flex-col justify-center space-y-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Start Anxiety Assessment
+                                </h3>
+                                <p class="text-slate-500 dark:text-slate-400 mt-1">Real-time AI-powered facial analysis
+                                    for
+                                    pre-operative screening.</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-4">
+                                <button onclick="window.location.href='/patient-info'"
+                                    class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg shadow-lg shadow-primary/20 flex items-center gap-2 transition-all active:scale-95">
+                                    <span class="material-symbols-outlined">center_focus_strong</span>
+                                    Begin Assessment
+                                </button>
+                                <span
+                                    class="text-sm font-semibold text-primary/70 bg-primary/10 px-3 py-1.5 rounded-full flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs">verified</span>
+                                    Clinical Grade
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Statistics Grid -->
+                <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <span
+                                class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">today</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Today</span>
+                        </div>
+                        <p id="statsToday" class="text-4xl font-black text-slate-900 dark:text-white">0</p>
+                        <p class="text-sm text-slate-500 mt-1">Assessments completed Today</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <span
+                                class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">analytics</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Accuracy</span>
+                        </div>
+                        <p id="statsAccuracy" class="text-4xl font-black text-slate-900 dark:text-white">-</p>
+                        <p class="text-sm text-slate-500 mt-1">System precision rate</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <span
+                                class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">database</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total</span>
+                        </div>
+                        <p id="statsTotal" class="text-4xl font-black text-slate-900 dark:text-white">0</p>
+                        <p class="text-sm text-slate-500 mt-1">Lifetime assessments</p>
+                    </div>
+                </section>
+                <!-- Guidelines Section -->
+                <section class="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-xl border border-primary/10 shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-primary text-3xl">fact_check</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Anxiety Monitoring Guidelines</h3>
+                    </div>
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <li
+                            class="flex items-start gap-4 p-4 rounded-lg bg-background-light dark:bg-slate-800 border border-primary/5">
+                            <div class="mt-1 flex-shrink-0">
+                                <span class="material-symbols-outlined text-primary active-icon">check_circle</span>
+                            </div>
+                            <p class="text-slate-700 dark:text-slate-300 font-medium leading-tight">Ensure patient is in
+                                neutral
+                                seated position</p>
+                        </li>
+                        <li
+                            class="flex items-start gap-4 p-4 rounded-lg bg-background-light dark:bg-slate-800 border border-primary/5">
+                            <div class="mt-1 flex-shrink-0">
+                                <span class="material-symbols-outlined text-primary active-icon">check_circle</span>
+                            </div>
+                            <p class="text-slate-700 dark:text-slate-300 font-medium leading-tight">Adequate lighting
+                                for facial
+                                capture</p>
+                        </li>
+                        <li
+                            class="flex items-start gap-4 p-4 rounded-lg bg-background-light dark:bg-slate-800 border border-primary/5 md:col-span-2">
+                            <div class="mt-1 flex-shrink-0">
+                                <span class="material-symbols-outlined text-primary active-icon">check_circle</span>
+                            </div>
+                            <p class="text-slate-700 dark:text-slate-300 font-medium leading-tight">Assessment before
+                                anesthetic
+                                administration</p>
+                        </li>
+                    </ul>
+                </section>
+            </main>
+            <!-- Bottom Navigation Bar -->
+            <!-- <nav
+                class="fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-primary/10 px-4 py-2 z-50 ">
+                <div class="max-w-2xl mx-auto flex justify-between items-center">
+                    <a class="site-nav-link flex flex-col items-center gap-1 p-2 text-primary group" href="/dashboard">
+                        <span class="material-symbols-outlined active-icon">dashboard</span>
+                        <span class="text-[10px] font-bold uppercase tracking-tighter">Dashboard</span>
+                    </a>
+                    <a class="site-nav-link flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors"
+                        href="/quick-scan">
+                        <span class="material-symbols-outlined">camera_front</span>
+                        <span class="text-[10px] font-bold uppercase tracking-tighter">Scan</span>
+                    </a>
+
+                    <a class="site-nav-link flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors"
+                        href="/patients">
+                        <span class="material-symbols-outlined">folder_open</span>
+                        <span class="text-[10px] font-bold uppercase tracking-tighter">Records</span>
+                    </a>
+                    <a class="site-nav-link flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors"
+                        href="/profile">
+                        <span class="material-symbols-outlined">account_circle</span>
+                        <span class="text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+                    </a>
+                </div>
+            </nav> -->
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            try {
+                const auth = sessionStorage.getItem('authenticated');
+                const email = sessionStorage.getItem('loginEmail');
+                if (auth !== 'true' || !email) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                // Get doctor info from session storage
+                const doctorName = sessionStorage.getItem('doctor_name');
+                const doctorId = sessionStorage.getItem('doctor_id');
+
+                const welcome = document.getElementById('welcomeHeading');
+                const sideDoctorName = document.querySelector('aside .flex-1.min-w-0 p.text-sm.font-semibold');
+
+                if (welcome) {
+                    if (doctorName) {
+                        welcome.textContent = 'Welcome, ' + doctorName;
+                    } else {
+                        const raw = email.split('@')[0] || '';
+                        const name = raw.replace(/[._-]/g, ' ').split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+                        welcome.textContent = 'Welcome, ' + (name || email);
+                    }
+                }
+
+                if (sideDoctorName && doctorName) {
+                    sideDoctorName.textContent = 'Dr. ' + doctorName;
+                }
+
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function () {
+                        try {
+                            sessionStorage.removeItem('authenticated');
+                            sessionStorage.removeItem('loginEmail');
+                            sessionStorage.removeItem('doctor_id');
+                            sessionStorage.removeItem('doctor_name');
+                            sessionStorage.removeItem('doctor_email');
+                        } catch (e) { }
+                        window.location.href = '/';
+                    });
+                }
+
+                // --- FETCH DASHBOARD STATS ---
+                async function fetchStats() {
+                    const doctorId = sessionStorage.getItem('doctor_id');
+                    if (!doctorId) return;
+
+                    try {
+                        const response = await fetch(`http://127.0.0.1:5000/api/doctor/dashboard-stats?doctorid=${doctorId}`);
+                        const data = await response.json();
+
+                        if (data.success) {
+                            const stats = data.data;
+                            const todayEl = document.getElementById('statsToday');
+                            const accuracyEl = document.getElementById('statsAccuracy');
+                            const totalEl = document.getElementById('statsTotal');
+
+                            if (todayEl) todayEl.textContent = stats.today || 0;
+                            if (accuracyEl) accuracyEl.textContent = stats.accuracy || '94%';
+                            if (totalEl) totalEl.textContent = stats.total || 0;
+                        }
+                    } catch (err) {
+                        console.error('Failed to fetch dashboard stats:', err);
+                    }
+                }
+
+                fetchStats();
+            } catch (err) {
+                window.location.href = '/';
+            }
+        });
+    </script>
+    <script src="nav.js"></script>
+</body>
+
+</html>

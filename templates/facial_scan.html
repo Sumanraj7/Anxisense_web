@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AnxietySense - Scanning State</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#106EBE",
+                        "mint": "#0FFCBE",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .clinical-gradient {
+            background: radial-gradient(circle at top left, #f0fdfa 0%, #f5f8f8 100%);
+        }
+
+        .scanning-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #106EBE, transparent);
+            box-shadow: 0 0 15px #106EBE;
+            width: 100%;
+            position: absolute;
+            top: 46%;
+            z-index: 10;
+        }
+
+        .face-guide-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 20;
+            overflow: hidden;
+        }
+
+        .face-guide-circle {
+            width: 260px;
+            height: 260px;
+            border: 4px solid #106EBE;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .face-guide-text {
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            margin-top: 180px;
+            background: rgba(0, 143, 105, 0.8);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-base text-slate-900 dark:text-slate-100 min-h-screen">
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden clinical-gradient">
+        <!-- Top Navigation Bar -->
+        <header
+            class="flex items-center justify-between border-b border-primary/10 bg-white/50 backdrop-blur-md px-6 py-4 lg:px-20">
+            <div class="flex items-center gap-3">
+                <button id="backBtn" aria-label="Go back" class="p-2 rounded-full hover:bg-white/30 text-slate-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+                    <span class="material-symbols-outlined text-2xl">monitoring</span>
+                </div>
+                <h2 class="text-xl font-bold tracking-tight text-slate-900">AnxietySense</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <button
+                    class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+                    <span class="material-symbols-outlined">help</span>
+                </button>
+                <button
+                    class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+                    <span class="material-symbols-outlined">settings</span>
+                </button>
+            </div>
+        </header>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col items-center justify-center px-4 py-12">
+            <div class="w-full max-w-4xl flex flex-col gap-8">
+                <!-- Status Header -->
+                <div class="text-center space-y-2">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold tracking-wide uppercase">
+                        <span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                        Live Analysis
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Analyzing physiological
+                        signals...</h1>
+                    <p class="text-slate-500 text-lg">Keep your face within the frame for best results.</p>
+                </div>
+                <!-- Camera Preview Container -->
+                <div class="relative group">
+                    <div
+                        class="relative aspect-video w-full overflow-hidden rounded-xl border-4 border-white shadow-2xl bg-slate-200">
+                        <!-- Camera Feed: video + fallback image -->
+                        <video id="cameraVideo" style="z-index:1; background:black;"
+                            class="absolute inset-0 w-full h-full object-cover" autoplay playsinline muted></video>
+                        <canvas id="captureCanvas" class="hidden"></canvas>
+                        <div id="cameraError"
+                            class="absolute inset-0 flex items-center justify-center text-white bg-black/60 hidden z-30 p-6 text-center">
+                        </div>
+                        <div id="fallbackImage" style="z-index:0;" class="absolute inset-0 bg-cover bg-center"
+                            data-alt="A person sitting calmly in front of a computer camera for scanning"
+                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDbrlU104hjOQxFJEYYeSkWwqUsOYKx_jdxTWGHqu5xmyO8bgVFuSu9xuFin8XASd-ReKhCi2gMdaYbDPMIH58zltl6X-VTwtT4-2_1xVjgYgmQ0FmVH5MntPAe_dHs3whyGxmCDHLGCGQIZXH0xa7DxoKPlAJ4x_thIWjq4Kj-ZVVYVDA918Rd4QCRxi9jj06PXLjvnKMN-Tt9i9fl8T24Du6QHv1XbgHHaJ_CvS1wkPQnm2FzkbPP8blv0BpwC9tJFN32e_kjwhpb')">
+                        </div>
+                        <!-- Enhanced Face Guide Overlay -->
+                        <div class="face-guide-container">
+                            <div class="face-guide-circle">
+                                <div class="face-guide-text">Position Face Here</div>
+                            </div>
+                        </div>
+                        <!-- Scanning Line Animation Effect -->
+                        <div class="scanning-line"></div>
+                        <!-- Analyzing Status Overlay -->
+                        <div id="scanStatus"
+                            class="absolute top-6 left-6 bg-black/40 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20 flex items-center gap-3">
+                            <span class="material-symbols-outlined text-white animate-spin">sync</span>
+                            <span class="text-white font-medium" id="scanStatusText">Scanning HRV...</span>
+                            <span class="ml-3 text-white font-black" id="scanHR"></span>
+                        </div>
+                        <!-- Corner Guides -->
+                        <div class="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-primary"></div>
+                        <div class="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-primary"></div>
+                        <div class="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-primary"></div>
+                        <div class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-primary"></div>
+
+                        <!-- Switch Camera Quick Access -->
+                        <button id="switchCameraBtn"
+                            class="absolute top-6 right-6 bg-black/40 backdrop-blur-md p-2 rounded-full border border-white/20 text-white hover:bg-black/60 transition-all z-20">
+                            <span class="material-symbols-outlined">flip_camera_ios</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Progress Section -->
+                <div class="bg-white/70 backdrop-blur-sm border border-primary/10 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-semibold text-primary uppercase tracking-wider">Session
+                                Progress</span>
+                            <span class="text-slate-700 font-medium">Scanning heart rate variability...</span>
+                        </div>
+                        <span id="progressPercent" class="text-2xl font-black text-primary">46%</span>
+                    </div>
+                    <div class="h-3 w-full bg-primary/10 rounded-full overflow-hidden">
+                        <div id="progressBar" class="h-full bg-primary rounded-full" style="width: 46%;"></div>
+                    </div>
+                    <p class="mt-4 text-sm text-slate-500 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">info</span>
+                        Almost halfway there. Please remain still and maintain a neutral expression.
+                    </p>
+                </div>
+                <!-- Action Controls -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button id="startScanBtn"
+                        class="group flex min-w-[200px] items-center justify-center gap-3 rounded-xl bg-primary px-8 py-4 text-lg font-bold text-white shadow-lg hover:bg-primary/90 transition-all active:scale-95">
+                        <span class="material-symbols-outlined">play_circle</span>
+                        Start Scan
+                    </button>
+
+                    <button id="captureBtn"
+                        class="group flex min-w-[200px] items-center justify-center gap-3 rounded-xl bg-primary/10 text-primary px-8 py-4 text-lg font-bold hover:bg-primary/20 transition-all active:scale-95">
+                        <span class="material-symbols-outlined">photo_camera</span>
+                        Capture
+                    </button>
+                    <button id="stopBtn"
+                        class="flex min-w-[200px] items-center justify-center gap-3 rounded-xl bg-slate-200 px-8 py-4 text-lg font-bold text-slate-700 hover:bg-slate-300 transition-all active:scale-95">
+                        <span class="material-symbols-outlined">stop_circle</span>
+                        Stop Scan
+                    </button>
+                    <!-- File Upload Button -->
+                    <button id="uploadTriggerBtn"
+                        class="flex min-w-[200px] items-center justify-center gap-3 rounded-xl border-2 border-primary text-primary px-8 py-4 text-lg font-bold hover:bg-primary/5 transition-all active:scale-95">
+                        <span class="material-symbols-outlined">upload_file</span>
+                        Upload Image
+                    </button>
+                    <!-- Hidden File Input -->
+                    <input type="file" id="fileInput" class="hidden" accept="image/*" />
+                </div>
+                <!-- Instructional Footer -->
+                <div class="mt-4 p-6 rounded-xl border border-dashed border-primary/30 bg-primary/5">
+                    <h3 class="text-slate-900 font-bold flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-primary">tips_and_updates</span>
+                        Scanning Instructions
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="flex items-start gap-3">
+                            <span
+                                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">1</span>
+                            <p class="text-sm text-slate-600">Ensure your face is well-lit and clearly visible in the
+                                center circle.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span
+                                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">2</span>
+                            <p class="text-sm text-slate-600">Avoid talking or making significant movements during the
+                                analysis phase.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span
+                                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">3</span>
+                            <p class="text-sm text-slate-600">Maintain a natural, steady breathing pattern for most
+                                accurate HRV data.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer class="py-6 px-10 text-center border-t border-primary/5">
+            <p class="text-sm text-slate-400">© 2024 AnxietySense Clinical Suite. Medical-grade physiological
+                monitoring.</p>
+        </footer>
+    </div>
+    <script>
+            (function () {
+                const startBtn = document.getElementById('startScanBtn');
+                const captureBtn = document.getElementById('captureBtn');
+                const stopBtn = document.getElementById('stopBtn');
+                const video = document.getElementById('cameraVideo');
+                const canvas = document.getElementById('captureCanvas');
+                const fallback = document.getElementById('fallbackImage');
+                const progressPercent = document.getElementById('progressPercent');
+                const progressBar = document.getElementById('progressBar');
+                const scanStatusText = document.getElementById('scanStatusText');
+                const scanHR = document.getElementById('scanHR');
+
+                const switchBtn = document.getElementById('switchCameraBtn');
+                const uploadTrigger = document.getElementById('uploadTriggerBtn');
+                const fileInput = document.getElementById('fileInput');
+
+                let stream = null;
+                let sampler = null;
+                let processor = null;
+                let samples = [];
+                let startTime = 0;
+                let currentFacingMode = 'user';
+
+                async function startScan(facingMode = 'user') {
+                    if (stream) {
+                        stopScan();
+                    }
+                    currentFacingMode = facingMode;
+                    try {
+                        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('getUserMedia not supported');
+                        stream = await navigator.mediaDevices.getUserMedia({
+                            video: { facingMode: currentFacingMode },
+                            audio: false
+                        });
+                        video.srcObject = stream;
+                        fallback.style.display = 'none';
+                        document.getElementById('cameraError').classList.add('hidden');
+                        canvas.width = 320; canvas.height = 240;
+                        samples = [];
+                        startTime = Date.now();
+                        scanStatusText.textContent = 'Scanning HRV...';
+                        scanHR.textContent = '';
+
+                        sampler = setInterval(() => {
+                            const ctx = canvas.getContext('2d');
+                            try {
+                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            } catch (e) { return; }
+                            const sw = 128, sh = 128;
+                            const sx = Math.max(0, Math.floor((canvas.width - sw) / 2));
+                            const sy = Math.max(0, Math.floor((canvas.height - sh) / 2));
+                            const img = ctx.getImageData(sx, sy, sw, sh);
+                            let sumG = 0;
+                            for (let i = 0; i < img.data.length; i += 4) sumG += img.data[i + 1];
+                            const avgG = sumG / (img.data.length / 4);
+                            const t = Date.now();
+                            samples.push({ t, v: avgG });
+                            const cutoff = t - 6000;
+                            samples = samples.filter(s => s.t >= cutoff);
+                            updateProgress();
+                        }, 100);
+
+                        processor = setInterval(() => {
+                            updateHR();
+                        }, 1000);
+
+                    } catch (err) {
+                        showCameraError(err);
+                    }
+                }
+
+                function toggleCamera() {
+                    const newMode = currentFacingMode === 'user' ? 'environment' : 'user';
+                    startScan(newMode);
+                }
+
+                async function handleFileUpload(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    stopScan();
+                    scanStatusText.textContent = 'Analyzing uploaded image...';
+
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                        const dataUrl = e.target.result;
+
+                        // Display the image in the scan circle area
+                        fallback.style.backgroundImage = `url(${dataUrl})`;
+                        fallback.style.display = 'block';
+                        video.style.display = 'none';
+
+                        // Create a blob for the API call
+                        const response = await fetch(dataUrl);
+                        const blob = await response.blob();
+
+                        const formData = new FormData();
+                        formData.append('image', blob, 'upload.jpg');
+
+                        try {
+                            const analyzeRes = await fetch('http://127.0.0.1:5000/api/analyze', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            const resData = await analyzeRes.json();
+                            resData.captured_image = dataUrl;
+
+                            if (resData.success) {
+                                sessionStorage.setItem('last_analysis_result', JSON.stringify(resData));
+                                const params = new URLSearchParams(window.location.search);
+                                window.location.href = '/facial-analysis-processing?' + params.toString();
+                            } else {
+                                showCameraError({
+                                    name: 'AnalysisFailed',
+                                    message: 'Face not detected in the uploaded image. Please try a clearer photo.'
+                                });
+                            }
+                        } catch (err) {
+                            console.error('File analysis failed:', err);
+                            showCameraError({ name: 'Error', message: 'Analysis failed. Please check your connection.' });
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+                function showCameraError(err) {
+                    const errBox = document.getElementById('cameraError');
+                    let msg = 'Camera unavailable.';
+                    if (err && err.name) {
+                        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') msg = 'Camera permission denied. Allow camera access in your browser.';
+                        else if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError') msg = 'No camera found. Connect a camera and retry.';
+                        else msg = (err.message || 'Camera error');
+                    } else if (err && err.message) msg = err.message;
+
+                    errBox.textContent = msg;
+                    errBox.classList.remove('hidden');
+                    scanStatusText.textContent = 'Error';
+                    console.warn('Scan error:', err);
+                }
+
+                function stopScan() {
+                    if (sampler) { clearInterval(sampler); sampler = null; }
+                    if (processor) { clearInterval(processor); processor = null; }
+                    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+                    fallback.style.display = '';
+                    video.style.display = '';
+                    scanStatusText.textContent = 'Scan stopped';
+                    scanHR.textContent = '';
+                }
+
+                function updateProgress() {
+                    const elapsed = (Date.now() - startTime) / 1000;
+                    const pct = Math.min(100, Math.round((elapsed / 6) * 100));
+                    progressPercent.textContent = pct + '%';
+                    progressBar.style.width = pct + '%';
+                }
+
+                function updateHR() {
+                    if (samples.length < 10) return;
+                    const vals = samples.map(s => s.v);
+                    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+                    let peaks = 0;
+                    for (let i = 1; i < vals.length - 1; i++) {
+                        if (vals[i] > vals[i - 1] && vals[i] > vals[i + 1] && vals[i] > mean + 0.7) peaks++;
+                    }
+                    const duration = (samples[samples.length - 1].t - samples[0].t) / 1000;
+                    const bpm = duration > 0 ? Math.round((peaks / duration) * 60) : 0;
+                    if (bpm > 30 && bpm < 200) scanHR.textContent = bpm + ' bpm';
+                    else scanHR.textContent = '';
+                }
+
+                startBtn.addEventListener('click', () => {
+                    try { startScan(currentFacingMode); } catch (e) { }
+                    startBtn.disabled = true;
+                    const params = new URLSearchParams(window.location.search);
+                    const target = '/facial-analysis-processing?' + params.toString();
+
+                    const duration = 6000;
+                    const start = Date.now();
+                    const tick = setInterval(async () => {
+                        const elapsed = Date.now() - start;
+                        const pct = Math.min(100, Math.round((elapsed / duration) * 100));
+                        progressPercent.textContent = pct + '%';
+                        progressBar.style.width = pct + '%';
+
+                        if (elapsed >= duration) {
+                            clearInterval(tick);
+                            scanStatusText.textContent = 'Verifying face detection...';
+
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                            canvas.toBlob(async (blob) => {
+                                const formData = new FormData();
+                                formData.append('image', blob, 'verify.jpg');
+                                try {
+                                    const capturedImg = canvas.toDataURL('image/jpeg', 0.8);
+                                    const response = await fetch('http://127.0.0.1:5000/api/analyze', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+                                    const resData = await response.json();
+                                    resData.captured_image = capturedImg;
+
+                                    if (resData.success) {
+                                        sessionStorage.setItem('last_analysis_result', JSON.stringify(resData));
+                                        window.location.href = target;
+                                    } else {
+                                        stopScan();
+                                        startBtn.disabled = false;
+                                        showCameraError({
+                                            name: 'FaceNotDetected',
+                                            message: 'Face not detected in camera. Please ensure clear visibility and try again.'
+                                        });
+                                        progressPercent.textContent = '0%';
+                                        progressBar.style.width = '0%';
+                                    }
+                                } catch (err) {
+                                    console.error('Detection pre-check failed:', err);
+                                    window.location.href = target;
+                                }
+                            }, 'image/jpeg', 0.8);
+                        }
+                    }, 100);
+                });
+
+                stopBtn.addEventListener('click', stopScan);
+                switchBtn.addEventListener('click', toggleCamera);
+                uploadTrigger.addEventListener('click', () => fileInput.click());
+                fileInput.addEventListener('change', handleFileUpload);
+
+                captureBtn.addEventListener('click', () => {
+                    if (!stream) { startScan(currentFacingMode); return; }
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const url = canvas.toDataURL('image/png');
+                    const a = document.createElement('a'); a.href = url; a.download = 'scan_snapshot.png'; a.click();
+                });
+
+                window.addEventListener('pagehide', stopScan);
+                window.addEventListener('load', () => {
+                    if (window.isSecureContext || location.hostname === 'localhost') {
+                        try { startScan(currentFacingMode); } catch (e) { }
+                    } else if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        showCameraError({ name: 'NotSupported', message: 'Your browser does not support camera access.' });
+                    }
+                });
+
+                const backBtn = document.getElementById('backBtn');
+                if (backBtn) {
+                    backBtn.addEventListener('click', () => {
+                        try {
+                            if (document.referrer && new URL(document.referrer).origin === location.origin) {
+                                history.back(); return;
+                            }
+                        } catch (e) { }
+                        window.location.href = '/patients' + window.location.search;
+                    });
+                }
+            })();
+    </script>
+</body>
+
+</html>

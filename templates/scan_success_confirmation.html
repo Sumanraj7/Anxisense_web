@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Scan Successful - AnxietySense</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#106EBE",
+                        "mint": "#0FFCBE",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif
+        }
+
+        .clinical-bg {
+            background-image: linear-gradient(rgba(245, 248, 248, 0.92), rgba(245, 248, 248, 0.92)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuDSvtFnRydsFl0TW5pa-4FrTfazUiICxQm-1xQ8bCCWpjppqoAmhz5n9UQ-eXb16n_VQx2Sn5LIgwRC2A8F0d9C-AEanH_cWICheVnQqHNwUmjBcRMg77KsHx81ECIZsvGzBNrU94B_q-9oSOATKFgXvsrMn-5kXupek1xVkOdZaHh115UwuuAnNMwM5M7zUw9Duy4G5ScwPEJHLjd8QjICivIzuxMDXWD8lLqDulMS8zLHYgmV4UA4CyOMbiONdIYCvIawtMmFfcct);
+            background-size: cover;
+            background-position: center
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display min-h-screen flex items-center justify-center p-4 clinical-bg">
+    <div class="max-w-2xl w-full">
+        <!-- Main Success Container -->
+        <div class="text-center space-y-8">
+            <!-- Success Icon Section -->
+            <div class="flex flex-col items-center">
+                <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                        <span class="material-icons text-white text-4xl">check</span>
+                    </div>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-3">Scan Successful</h1>
+                <p class="text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
+                    Patient facial data has been captured and analyzed successfully for diagnostic markers.
+                </p>
+            </div>
+            <!-- Summary Card -->
+            <div
+                class="bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-primary/20 rounded-xl p-6 shadow-sm max-w-lg mx-auto">
+                <div class="flex items-center space-x-6">
+                    <!-- Thumbnail Preview -->
+                    <div
+                        class="relative w-24 h-24 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200">
+                        <img alt="Patient Scan Thumbnail" class="w-full h-full object-cover"
+                            data-alt="Blurred close up of human facial scan"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuABd-8pWBqpSzEoMAuAglB1Hd5Bw1KK1-AqkAyUq-acIMSacW6DoEgqXDWSXtuehHiCgeUREQ99SUsDzqvItDIAysjN1eAErBEVd_DAJuxpNb-CtuB0f0OFxAoNqDX97X9kCKpilhYR42w_vPIPaL5AHv4Z2vr2gr1T5FDFSKYcaCd0fsRUD9MhDT_-h64DPKD8vbkJUQgIfEAFjOhv3UaplNJM2pjqQdcGlYlU9PHFTfjuMxMG-QAHXIGsT8swI1GFTUi_bNDvmESS" />
+                        <div class="absolute inset-0 bg-primary/10 flex items-center justify-center">
+                            <span class="material-icons text-primary/40">face</span>
+                        </div>
+                    </div>
+                    <!-- Metadata -->
+                    <div class="flex-grow text-left space-y-3">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Scan Reference
+                            </p>
+                            <p class="text-lg font-bold text-slate-800 dark:text-slate-200 font-mono">#AS-99281</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Verification
+                                Status</p>
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-wide">
+                                <span class="material-icons text-sm mr-1">verified</span>
+                                CLINICAL GRADE
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <a id="viewAnalysisBtn"
+                    class="w-full sm:w-auto px-8 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors shadow-md flex items-center justify-center"
+                    href="/analysis-report">
+                    <span class="material-icons mr-2 text-sm">visibility</span>
+                    View Full Analysis
+                </a>
+                <a href="/dashboard"
+                    class="w-full sm:w-auto px-8 py-3 bg-transparent border-2 border-primary/30 text-primary hover:bg-primary/5 font-semibold rounded-lg transition-colors flex items-center justify-center">
+                    <span class="material-icons mr-2 text-sm">dashboard</span>
+                    Back to Dashboard
+                </a>
+            </div>
+            <!-- HIPAA Footer -->
+            <div class="pt-12">
+                <div class="flex items-center justify-center space-x-2 text-slate-400 text-sm">
+                    <span class="material-icons text-base">lock</span>
+                    <p>HIPAA Compliant. All data is encrypted end-to-end.</p>
+                </div>
+                <div class="mt-4 flex justify-center space-x-6">
+                    <div class="h-8 w-24 opacity-30 grayscale contrast-125">
+                        <img class="h-full w-full object-contain"
+                            data-alt="Abstract secure healthcare technology partner logo"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHibCFDdyzZmr9NZcYHKVGbXMhtl52GHZz8EV-w_RW1GnnkS2KrKOiwnd7ICy8Ahi0QOJi8AYSRp5HiFnlsPf9-k1x8GnctEJavfW1D2OaN9UTzzolbCFSiS19aiEyfnhKo1VyYmNQQeASpEnp2X6bnGDrvYb39SQRqOby9QIolJdseLG2GiGlVW5tdLxdi8ByTUasEHLsvj27mha7OmvrZ9o7-EQzNSam-6dXtoSGgDjd4WPrzAx8Qchiep1SqTXq2tJe56kFhvRQ" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+            // preserve query params (patient info) when opening the full analysis report
+            (function () {
+                const btn = document.getElementById('viewAnalysisBtn');
+                if (!btn) return;
+                const params = new URLSearchParams(window.location.search);
+                if (params.toString()) btn.href = btn.getAttribute('href') + '?' + params.toString();
+            })();
+    </script>
+</body>
+
+</html>
