@@ -1,0 +1,2 @@
+[SUCCESS] Table 'patients' exists.
+Columns: id, patientid, doctorid, fullname, age, gender, proceduretype, healthissue, previousanxietyhistory

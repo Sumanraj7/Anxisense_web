@@ -1,0 +1,24 @@
+----------------------------------------------------------------
+Running AnxiSense Backend Verification...
+----------------------------------------------------------------
+
+[INFO] Checking Environment Variables...
+  OK: DB_HOST = localhost
+  OK: DB_USER = root
+  OK: DB_PASSWORD = ******
+  OK: DB_NAME = anxi
+  OK: EMAIL_USER = sumanraj71718@gmail.com
+  OK: EMAIL_PASS = ******
+  OK: SECRET_KEY = ******
+  [SUCCESS] All environment variables present.
+
+[INFO] Checking Database Connection...
+  [SUCCESS] Connected to database.
+
+[INFO] Checking 'doctors' Table Schema...
+  Found columns: id, username, email, otp, created_at
+  [SUCCESS] 'otp' column exists in 'doctors' table.
+
+----------------------------------------------------------------
+[SUCCESS] Backend verification completed successfully!
+----------------------------------------------------------------
